@@ -30,15 +30,14 @@ public class CharacterMovement : NetworkBehaviour
     private bool _crouch = false;
     private bool _crouchDelay = false;
 
-    private void Start()
+    public override void OnStartServer()
     {
         if (!isLocalPlayer)
         {
             cam.gameObject.SetActive(false);
         }
-        // cam.Priority++;
     }
-    
+
     private void Update()
     {
         if (!isLocalPlayer)
@@ -50,6 +49,7 @@ public class CharacterMovement : NetworkBehaviour
         CheckGrounded();
         Movement();
         UpdaterAnimatorValues();
+        
     }
 
     private void CharacterInputs()
