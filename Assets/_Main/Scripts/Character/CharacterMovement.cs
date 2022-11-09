@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -29,8 +30,9 @@ public class CharacterMovement : NetworkBehaviour
     public float movementSmoothTime;
     private bool _crouch = false;
     private bool _crouchDelay = false;
+    public bool thisPlayerInside = false;
 
-    public override void OnStartServer()
+    private void Start()
     {
         if (!isLocalPlayer)
         {
@@ -49,7 +51,6 @@ public class CharacterMovement : NetworkBehaviour
         CheckGrounded();
         Movement();
         UpdaterAnimatorValues();
-        
     }
 
     private void CharacterInputs()
@@ -108,21 +109,6 @@ public class CharacterMovement : NetworkBehaviour
         _velocity.y = Mathf.Sqrt(jumpPower * -2 * gravity);
     }
 
-    /*private void Crouch()
-    {
-        if (_crouch)
-        {
-            speed /= 2;
-            _anim.SetBool("crouch", true);
-        }
-
-        else if (!_crouch)
-        {
-            speed *= 2;
-            _anim.SetBool("crouch", false);
-        }
-    }*/
-    
     private IEnumerator Crouch()
     {
         _crouchDelay = true;
