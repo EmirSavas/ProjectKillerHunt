@@ -1,18 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+[ExecuteInEditMode, AddComponentMenu("AI/AI Sight")]
 public class AISight : MonoBehaviour
 {
     public Transform target;
     public Transform lastSeenTransform;
 
-    [Space(20)] [Header("SETTINGS")]
-    // [SerializeField] private Transform refPoint;
-    // [SerializeField] private float fov;
-    // [SerializeField] private float maxRange;
-    // [SerializeField] private float minRange;
-
+    [Space(20)]
+    [Header("SETTINGS")]
+    [Space(5)]
     public float distance = 10;
     public float angle = 30;
     public float height = 1.0f;
@@ -207,7 +204,7 @@ public class AISight : MonoBehaviour
         if (lastSeenTransform)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(lastSeenTransform.position, 0.2f);
+            Gizmos.DrawSphere(lastSeenTransform.position, 0.5f);
         }
         
         
@@ -221,7 +218,7 @@ public class AISight : MonoBehaviour
         Gizmos.color = Color.red;
         foreach (var obj in _objects)
         {
-            Gizmos.DrawSphere(obj.transform.position, 0.2f);
+            Gizmos.DrawSphere(obj.transform.position, 0.5f);
         }
     }
 }
