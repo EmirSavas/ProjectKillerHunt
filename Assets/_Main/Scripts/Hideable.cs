@@ -9,32 +9,27 @@ public class Hideable : NetworkBehaviour
 {
     public Transform referansPoint;
 
-    public GameObject uiPanel;
-
     public float radius = 10f;
 
     [SyncVar] public bool isEmpty;
-
     
-    
-
     public void CheckPlayer(NetworkIdentity id)
     {
         CharacterMovement player = id.GetComponent<CharacterMovement>();
         
-        if (!player.thisPlayerInside && !isEmpty)
+        if (!player.playerHiding && !isEmpty)
         {
             player.GetComponent<CharacterController>().enabled = false;
             player.transform.position = this.transform.position;
-            player.thisPlayerInside = true;
+            player.playerHiding = true;
             CmdCheckPlayer(true);
         }
 
-        else if (player.thisPlayerInside)
+        else if (player.playerHiding)
         {
             player.transform.position = referansPoint.position;
             player.GetComponent<CharacterController>().enabled = true;
-            player.thisPlayerInside = false;
+            player.playerHiding = false;
             CmdCheckPlayer(false);
         }
     }

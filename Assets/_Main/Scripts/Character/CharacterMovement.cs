@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
 using Unity.Collections;
 
 public class CharacterMovement : NetworkBehaviour
@@ -14,23 +15,39 @@ public class CharacterMovement : NetworkBehaviour
     public Transform groundChecker;
     public CinemachineVirtualCamera cam;
 
-    //Values
-    public int jumpPower;
-    public float speed = 12f;
-    [SerializeField] private float gravity = -9.81f;
+    //Vertical Movement Values
+    public int jumpPower = 1;
+    private float _gravity = -9.81f;
+    private bool _isGrounded;
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private  LayerMask groundMask;
-    private Vector3 _velocity;
-    [ReadOnly] private bool _isGrounded;
-    private bool _move;
+  
+    //Horizontal Movement Values
+    public float speed = 12f;
+    public float movementSmoothTime;
     private float _horizontal;
     private float _vertical;
-    private Vector2 currentMovement;
-    private Vector2 smoothMove;
-    public float movementSmoothTime;
+    private bool _move;
+    private float _stamina;
+    public float staminaRegen;
+    private Vector3 _velocity;
+    private Vector2 _currentMovement;
+    private Vector2 _smoothMove;
+    private float _staminaTimer;
+
+    //First Person Camera
+    public float mouseSensivity = 10f;
+    private float xRotation = 0.0f;
+
+    //Canvas
+    public Image StaminaBar;
+
+    //Crouch Values
     private bool _crouch = false;
     private bool _crouchDelay = false;
-    public bool thisPlayerInside = false;
+   
+    //Hiding Values
+    public bool playerHiding = false;
 
     private void Start()
     {
@@ -38,6 +55,9 @@ public class CharacterMovement : NetworkBehaviour
         {
             cam.gameObject.SetActive(false);
         }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        _stamina = 100;
     }
 
     private void Update()
@@ -51,8 +71,20 @@ public class CharacterMovement : NetworkBehaviour
         CheckGrounded();
         Movement();
         UpdaterAnimatorValues();
+        CameraController();
     }
 
+    private void CameraController()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
+ 
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90, 90);
+ 
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
+    }
     private void CharacterInputs()
     {
         _horizontal = Input.GetAxis("Horizontal");
@@ -72,9 +104,32 @@ public class CharacterMovement : NetworkBehaviour
             }
         }
 
-        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W))
+        //Run and Stamina
+        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W) && _stamina > 0)
         {
             _vertical *= 2;
+            _stamina -= Time.deltaTime * staminaRegen;
+            StaminaBar.fillAmount = _stamina / 100;
+            _staminaTimer = 0;
+        }
+
+        if (_vertical != 2 && _stamina < 100)
+        {
+            if (_staminaTimer < 2.1f)
+            {
+                _staminaTimer += Time.deltaTime;
+            }
+            
+            if (_staminaTimer >= 2)
+            {
+                _stamina += Time.deltaTime * staminaRegen;
+                StaminaBar.fillAmount = _stamina / 100;
+            }
+        }
+        
+        if (_stamina > 100)
+        {
+            _stamina = 100;
         }
     }
 
@@ -87,10 +142,10 @@ public class CharacterMovement : NetworkBehaviour
     {
         Vector2 input = new Vector2(_horizontal, _vertical);
         
-        smoothMove = Vector2.SmoothDamp(smoothMove, input, ref currentMovement, movementSmoothTime);
+        _smoothMove = Vector2.SmoothDamp(_smoothMove, input, ref _currentMovement, movementSmoothTime);
         
-        Vector3 move = new Vector3(smoothMove.x, 0 , smoothMove.y);
-    
+        Vector3 move = transform.right * _smoothMove.x + _smoothMove.y * transform.forward;
+
         _controller.Move(move * speed * Time.deltaTime);
 
         if (input.magnitude > 0)
@@ -106,7 +161,7 @@ public class CharacterMovement : NetworkBehaviour
 
     private void Jump()
     {
-        _velocity.y = Mathf.Sqrt(jumpPower * -2 * gravity);
+        _velocity.y = Mathf.Sqrt(jumpPower * -2 * _gravity);
     }
 
     private IEnumerator Crouch()
@@ -139,7 +194,7 @@ public class CharacterMovement : NetworkBehaviour
             _velocity.y = 0f;
         }
         
-        _velocity.y += gravity * Time.deltaTime;
+        _velocity.y += _gravity * Time.deltaTime;
         
         _controller.Move(_velocity * Time.deltaTime);
     }
