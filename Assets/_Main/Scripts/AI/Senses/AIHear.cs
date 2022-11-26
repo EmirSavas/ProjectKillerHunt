@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [ExecuteInEditMode, AddComponentMenu("AI/AI Hear")]
@@ -8,6 +9,11 @@ public class AIHear : MonoBehaviour
     [SerializeField] private bool drawMesh = true;
     [SerializeField] private Color meshColor;
     [SerializeField] private float radius;
+
+    private void Start()
+    {
+        
+    }
 
     private void OnDrawGizmos()
     {

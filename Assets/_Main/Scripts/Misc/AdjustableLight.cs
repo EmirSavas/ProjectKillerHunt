@@ -6,6 +6,7 @@ public class AdjustableLight : MonoBehaviour
 {
     public enum LightTypes
     {
+        NONE,
         FLICK,
         OPENCLOSE
     }
@@ -14,6 +15,9 @@ public class AdjustableLight : MonoBehaviour
     [Header("SETTINGS")]
     [Space(5)]
     [SerializeField] private bool startWithMinValue;
+    [SerializeField] private bool rotate;
+    [SerializeField] private Vector3 rotateAxis;
+    [SerializeField] private float rotateSpeed;
     [SerializeField] private float flickRate;
     [SerializeField] private float studderRate;
     [SerializeField] private int minFlickCount;
@@ -48,6 +52,12 @@ public class AdjustableLight : MonoBehaviour
     private void Update()
     {
         _rate -= Time.deltaTime;
+
+        if (rotate)
+        {
+            var rotation = Time.deltaTime * rotateAxis * rotateSpeed;
+            transform.Rotate(rotation);
+        }
         
         if (_rate <= 0 && type != LightTypes.FLICK)
         {
@@ -66,6 +76,9 @@ public class AdjustableLight : MonoBehaviour
 
             case LightTypes.OPENCLOSE:
                 OpenClose();
+                break;
+            
+            case LightTypes.NONE:
                 break;
                 
         }

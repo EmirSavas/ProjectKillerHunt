@@ -18,7 +18,7 @@ public class AISight : MonoBehaviour
     public LayerMask layers;
     public LayerMask occlusionLayers;
 
-    public List<GameObject> Objects
+    public List<Transform> Objects
     {
         get
         {
@@ -26,7 +26,7 @@ public class AISight : MonoBehaviour
             return _objects;
         }
     }
-    private readonly List<GameObject> _objects = new List<GameObject>();
+    private readonly List<Transform> _objects = new List<Transform>();
 
     private readonly Collider[] _colliders = new Collider[50];
     private Mesh _mesh;
@@ -37,6 +37,8 @@ public class AISight : MonoBehaviour
 
     private void Start()
     {
+        //lastSeenTransform = new GameObject("Last Seen").transform; todo On Validate Problem
+        
         _scanInterval = 1.0f / scanFrequency;
     }
 
@@ -58,20 +60,24 @@ public class AISight : MonoBehaviour
 
         for (int i = 0; i < _count; i++)
         {
-            GameObject obj = _colliders[i].gameObject;
+            Transform obj = _colliders[i].transform;
 
             if (IsInSight(obj))
             {
                 lastSeenTransform.position = obj.transform.position;
                 _objects.Add(obj);
             }
+            else
+            {
+                _objects.Remove(obj);
+            }
         }
     }
 
-    public bool IsInSight(GameObject obj)
+    public bool IsInSight(Transform obj)
     {
         Vector3 origin = transform.position;
-        Vector3 destination = obj.transform.position;
+        Vector3 destination = obj.position;
         Vector3 direction = destination - origin;
 
         if (direction.y < 0 || direction.y > height)
@@ -206,19 +212,20 @@ public class AISight : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(lastSeenTransform.position, 0.5f);
         }
-        
-        
-        // Gizmos.DrawWireSphere(transform.position, distance);
-        //
-        // for (int i = 0; i < _count; i++)
-        // {
-        //     Gizmos.DrawSphere(_colliders[i].transform.position, 0.2f);
-        // }
 
-        Gizmos.color = Color.red;
+        if (_objects.Count == 0)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(lastSeenTransform.position, transform.position);
+        }
+
         foreach (var obj in _objects)
         {
+            Gizmos.color = Color.red;
             Gizmos.DrawSphere(obj.transform.position, 0.5f);
+            
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(obj.position, transform.position);
         }
     }
 }
