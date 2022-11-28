@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Telepathy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,10 +26,38 @@ public class CharacterMechanic : NetworkBehaviour
     
     //Item
     public Item selectedItem;
-
-    public GameObject[] item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
+    public GameObject[] itemPrefab; 
+    public List<GameObject> item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
     public int selectedGameObject;
+    [SyncVar(hook = nameof(OnWeaponChanged))]
+    public int activeWeaponSynced;
+    public Flashlight _flashlight;
 
+
+
+    void Start()
+    {
+        for (int i = 0; i < itemPrefab.Length; i++)
+        {
+            GameObject spawnedObj = Instantiate(itemPrefab[i], hand);
+            item.Add(spawnedObj);
+        }
+        
+        Invoke("SetItemOnStart", 1f);
+    }
+
+    void SetItemOnStart()
+    {
+        foreach (var _item in item)
+        {
+            if (_item != null)
+            {
+                _item.SetActive(false);
+            }
+        }
+
+        _flashlight = item[0].GetComponent<Flashlight>();
+    }
 
     void Update()
     {
@@ -42,6 +71,17 @@ public class CharacterMechanic : NetworkBehaviour
         DropItemInHand();
 
         InventorySlotInput();
+
+        FlashChangeState();
+    }
+
+    private void FlashChangeState()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && selectedGameObject == 0)
+        {
+            _flashlight.lightOnOff = !_flashlight.lightOnOff;
+            _flashlight.CmdOpenFlashlight(_flashlight.lightOnOff);
+        }
     }
 
     public void DropItemInHand()
@@ -53,61 +93,49 @@ public class CharacterMechanic : NetworkBehaviour
             item[selectedGameObject].SetActive(false);
         }
     }
+    
+    void OnWeaponChanged(int _Old, int _New)
+    {
+        if (0 <= _Old && _Old < item.Count && item[_Old] != null)
+            item[_Old].SetActive(false);
+        
+        if (0 <= _New && _New < item.Count && item[_New] != null)
+            item[_New].SetActive(true);
+    }
+    
+    [Command]
+    public void CmdChangeActiveWeapon(int newIndex)
+    {
+        activeWeaponSynced = newIndex;
+    }
 
     public void SelecetedItem()
     {
         switch (selectedItem)
         {
             case Item.FLASHLIGHT:
-                EquipmentChanger(0);
                 selectedGameObject = 0;
+                CmdChangeActiveWeapon(selectedGameObject);
                 break;
             case Item.KEY:
-                EquipmentChanger(1);
                 selectedGameObject = 1;
+                CmdChangeActiveWeapon(selectedGameObject);
                 break;
             case Item.MEDKIT:
-                EquipmentChanger(2);
                 selectedGameObject = 2;
+                CmdChangeActiveWeapon(selectedGameObject);
                 break;
             case Item.Syringe:
-                EquipmentChanger(3);
                 selectedGameObject = 3;
+                CmdChangeActiveWeapon(selectedGameObject);
                 break;
             default:
-                EquipmentChanger(0);
                 selectedGameObject = 0;
+                CmdChangeActiveWeapon(selectedGameObject);
                 break;
         }
     }
 
-    
-    public void EquipmentChanger(int _item)
-    {
-        item[_item].SetActive(true); 
-        CmdEquipmentChanger(_item, true);
-
-        for (int i = 0; i < item.Length; i++)
-        {
-            if (i != _item)
-            {
-                item[i].SetActive(false); 
-                CmdEquipmentChanger(i, false);
-            }
-        }
-    }
-
-    [Command]
-    public void CmdEquipmentChanger(int _item, bool _bool)
-    {
-        RpcEquipmentChanger(_item, _bool);
-    }
-    
-    [ClientRpc]
-    public void RpcEquipmentChanger(int _item, bool _bool)
-    {
-        item[_item].SetActive(_bool);
-    }
 
 
     public void AddItemToInventory(Item item)

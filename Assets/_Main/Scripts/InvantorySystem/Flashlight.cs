@@ -7,9 +7,10 @@ using UnityEngine;
 public class Flashlight : NetworkBehaviour, IInteractable
 {
     public Light light;
+    public bool lightOnOff;
+    [SyncVar(hook = nameof(OnLightStatusChanged))]
+    public bool lightStatusSynced;
 
-    [SyncVar]private bool lightOnOff;
-    
     public void Interact(CharacterMechanic cm)
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -18,26 +19,15 @@ public class Flashlight : NetworkBehaviour, IInteractable
             NetworkServer.Destroy(gameObject);
         }
     }
-
-    private void Update()
+    
+    [Command(requiresAuthority = false)]
+    public void CmdOpenFlashlight(bool value)
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            CmdOpenFlashlight();
-            lightOnOff = !lightOnOff;
-        }
+        lightStatusSynced = value;
     }
 
-    [Command]
-    private void CmdOpenFlashlight()
-    {
-        RpcOpenFlashlight();
-    }
-
-    [ClientRpc]
-    private void RpcOpenFlashlight()
+    void OnLightStatusChanged(bool _Old, bool _New)
     {
         light.enabled = lightOnOff;
     }
-
 }
