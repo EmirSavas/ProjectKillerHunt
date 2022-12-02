@@ -3,21 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 public class NetworkManagerLobby : NetworkManager
 {
     [Scene] private string menuScene = "Scene_Lobby"; //Lobi adiyla esit olmasi lazim!
 
     [SerializeField] private NetworkRoomPlayerLobby roomPlayerPrefab = null;
+    [SerializeField] private NetworkGamePlayerLobby gamePlayerPrefab = null;
+    
     
     [SerializeField] private int minPlayers = 2;
-    
+
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
 
     public List<NetworkRoomPlayerLobby> roomPlayers { get; } = new List<NetworkRoomPlayerLobby>();
+    public List<NetworkGamePlayerLobby> gamePlayers = new List<NetworkGamePlayerLobby>();
 
     public override void OnStartServer()
     {
@@ -118,5 +123,35 @@ public class NetworkManagerLobby : NetworkManager
         }
         
         return true;
+    }
+
+    public void StartGame()
+    {
+        if (SceneManager.GetActiveScene().name == menuScene)
+        {
+            if (!IsReadyToStart())
+            {
+                return;
+            }
+            
+            ServerChangeScene("Emre(Character)");
+        }
+    }
+
+    public override void ServerChangeScene(string newSceneName)
+    {
+        if (SceneManager.GetActiveScene().name == menuScene &&  newSceneName.StartsWith("Emre(Character)"))
+        {
+            for (int i = roomPlayers.Count - 1; i >= 0 ; i--)
+            {
+                var conn = roomPlayers[i].connectionToClient;
+                var gameplayerInstance = Instantiate(gamePlayerPrefab);
+                gameplayerInstance.SetDisplayName(roomPlayers[i].DisplayName);
+                NetworkServer.Destroy(conn.identity.gameObject);
+                NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);
+            }
+        }
+        
+        base.ServerChangeScene(newSceneName);
     }
 }

@@ -49,16 +49,20 @@ public class CharacterMovement : NetworkBehaviour
     //Hiding Values
     public bool playerHiding = false;
 
-    private void Start()
+    public override void OnStartClient()
     {
+        DeathManager.instance.cam.Add(cam);
+
         if (!isLocalPlayer)
         {
             cam.gameObject.SetActive(false);
+            DeathManager.instance.FindPlayerCam();
         }
 
         Cursor.lockState = CursorLockMode.Locked;
         _stamina = 100;
     }
+
 
     private void Update()
     {

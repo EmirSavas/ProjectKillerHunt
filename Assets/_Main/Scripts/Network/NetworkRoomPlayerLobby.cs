@@ -129,9 +129,10 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         if (Room.roomPlayers[0].connectionToClient != connectionToClient) { return;}
 
         //Start Game
-         if (Room.roomPlayers.Count >= 2)
+         if (Room.roomPlayers.Count >= 1)
          {
              Debug.Log("GameStarting");
+             Room.StartGame();
          }
     }
 }

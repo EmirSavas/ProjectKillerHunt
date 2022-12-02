@@ -23,30 +23,20 @@ public class CharacterMechanic : NetworkBehaviour
     public GameObject feedback;
     public InventorySystem inventorySystem;
     public Transform hand;
+    public Transform carryHeavyThings;
     
     //Item
     public Item selectedItem;
     public GameObject[] itemPrefab; 
-    public List<GameObject> item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
+    public GameObject[] item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
     public int selectedGameObject;
-    [SyncVar(hook = nameof(OnWeaponChanged))]
-    public int activeWeaponSynced;
     public Flashlight _flashlight;
 
+    [SyncVar(hook = nameof(OnWeaponChanged))]
+    public int activeWeaponSynced;
 
 
     void Start()
-    {
-        for (int i = 0; i < itemPrefab.Length; i++)
-        {
-            GameObject spawnedObj = Instantiate(itemPrefab[i], hand);
-            item.Add(spawnedObj);
-        }
-        
-        Invoke("SetItemOnStart", 1f);
-    }
-
-    void SetItemOnStart()
     {
         foreach (var _item in item)
         {
@@ -55,9 +45,8 @@ public class CharacterMechanic : NetworkBehaviour
                 _item.SetActive(false);
             }
         }
-
-        _flashlight = item[0].GetComponent<Flashlight>();
     }
+    
 
     void Update()
     {
@@ -80,8 +69,20 @@ public class CharacterMechanic : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.F) && selectedGameObject == 0)
         {
             _flashlight.lightOnOff = !_flashlight.lightOnOff;
-            _flashlight.CmdOpenFlashlight(_flashlight.lightOnOff);
+            CmdFlashChangeState(_flashlight.lightOnOff);
         }
+    }
+    
+    [Command]
+    private void CmdFlashChangeState(bool value)
+    {
+        RpcFlashChangeState(value);
+    }
+    
+    [ClientRpc]
+    private void RpcFlashChangeState(bool value)
+    {
+        _flashlight.light.enabled = value;
     }
 
     public void DropItemInHand()
@@ -96,10 +97,10 @@ public class CharacterMechanic : NetworkBehaviour
     
     void OnWeaponChanged(int _Old, int _New)
     {
-        if (0 <= _Old && _Old < item.Count && item[_Old] != null)
+        if (0 <= _Old && _Old < item.Length && item[_Old] != null)
             item[_Old].SetActive(false);
         
-        if (0 <= _New && _New < item.Count && item[_New] != null)
+        if (0 <= _New && _New < item.Length && item[_New] != null)
             item[_New].SetActive(true);
     }
     
@@ -205,6 +206,18 @@ public class CharacterMechanic : NetworkBehaviour
         if (colliderGameObject.TryGetComponent(out IInteractable interactableObj))
         {
             interactableObj.Interact(this);
+        }
+    }
+
+    public void CarryHeavyItemChangeSpeed(bool value)
+    {
+        if (value)
+        {
+            player.speed = 1;
+        }
+        else
+        {
+            player.speed = 2;
         }
     }
 }
