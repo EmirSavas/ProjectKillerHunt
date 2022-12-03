@@ -56,10 +56,12 @@ public class CharacterMovement : NetworkBehaviour
         if (!isLocalPlayer)
         {
             cam.gameObject.SetActive(false);
-            DeathManager.instance.FindPlayerCam();
         }
 
+        //DeathManager.instance.FindPlayerCam();
+        
         Cursor.lockState = CursorLockMode.Locked;
+        
         _stamina = 100;
     }
 
