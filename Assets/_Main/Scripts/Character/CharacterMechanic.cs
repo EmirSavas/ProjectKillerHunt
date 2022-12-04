@@ -25,6 +25,7 @@ public class CharacterMechanic : NetworkBehaviour
     public GameObject pressE;
     public InventorySystem inventorySystem;
     public Transform hand;
+    public GameObject pauseMenu;
     
     //Debuff
     public bool isPoisonedStage1 = false;
@@ -67,8 +68,19 @@ public class CharacterMechanic : NetworkBehaviour
         InventorySlotInput();
 
         FlashChangeState();
+
+        PauseMenu();
     }
 
+    private void PauseMenu()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            player.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            pauseMenu.SetActive(true);
+        }
+    }
     private void FlashChangeState()
     {
         if (Input.GetKeyDown(KeyCode.F) && selectedGameObject == 0)
