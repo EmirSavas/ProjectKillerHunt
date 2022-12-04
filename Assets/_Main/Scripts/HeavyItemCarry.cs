@@ -4,20 +4,15 @@ using Mirror;
 public class HeavyItemCarry : NetworkBehaviour, IInteractable
 {
     private bool playerCarryThis = false;
-    private CharacterMechanic cm;
-    public void Interact(CharacterMechanic _cm)
-    {
-        cm = _cm;
-    }
 
-    private void Update()
+    public void Interact(CharacterMechanic cm)
     {
-        if (Input.GetKeyDown(KeyCode.E) && !playerCarryThis)
+        if (Input.GetKeyUp(KeyCode.E) && !playerCarryThis)
         {
             CmdCarryItem(true, cm.transform, cm);
         }
         
-        else if (Input.GetKeyDown(KeyCode.E) && playerCarryThis)
+        else if (Input.GetKeyUp(KeyCode.E) && playerCarryThis)
         {
             CmdCarryItem(false, null, cm);
         }
@@ -38,7 +33,7 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
         
         if (playerCarryThis)
         {
-            transform.localPosition = new Vector3(0, 0, 2);
+            transform.localPosition = new Vector3(0, 1, 2);
         }
 
         cm.CarryHeavyItemChangeSpeed(playerCarryThis);

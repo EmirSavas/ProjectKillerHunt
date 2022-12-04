@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mirror;
+using Mirror.Examples.RigidbodyPhysics;
 using Telepathy;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,16 +19,21 @@ public enum Item
 public class CharacterMechanic : NetworkBehaviour
 {
     //Companents
+    public Image[] poisonImage;
     public CharacterMovement player;
     private Hideable hideableObj;
-    public GameObject feedback;
+    public GameObject pressE;
     public InventorySystem inventorySystem;
     public Transform hand;
-    public Transform carryHeavyThings;
+    public GameObject pauseMenu;
+    
+    //Debuff
+    public bool isPoisonedStage1 = false;
+    public bool isPoisonedStage2 = false;
     
     //Item
     public Item selectedItem;
-    public GameObject[] itemPrefab; 
+    public List<GameObject> droppedItemPrefab;
     public GameObject[] item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
     public int selectedGameObject;
     public Flashlight _flashlight;
@@ -46,7 +52,7 @@ public class CharacterMechanic : NetworkBehaviour
             }
         }
     }
-    
+
 
     void Update()
     {
@@ -62,8 +68,19 @@ public class CharacterMechanic : NetworkBehaviour
         InventorySlotInput();
 
         FlashChangeState();
+
+        PauseMenu();
     }
 
+    private void PauseMenu()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            player.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            pauseMenu.SetActive(true);
+        }
+    }
     private void FlashChangeState()
     {
         if (Input.GetKeyDown(KeyCode.F) && selectedGameObject == 0)
@@ -87,12 +104,27 @@ public class CharacterMechanic : NetworkBehaviour
 
     public void DropItemInHand()
     {
-        if (Input.GetKeyDown(KeyCode.G) && selectedItem != Item.EMPTY && selectedItem != Item.FLASHLIGHT)
+        if (Input.GetKeyDown(KeyCode.G) && selectedItem != Item.EMPTY)
         {
             inventorySystem.DeleteItemToSlot(selectedItem);
 
-            item[selectedGameObject].SetActive(false);
+            CmdSpawnDroppedItemPrefab(selectedGameObject);
         }
+    }
+
+    [Command]
+    public void CmdSpawnDroppedItemPrefab(int value)
+    {
+        GameObject spawnDroppedItemPrefab = Instantiate(droppedItemPrefab[value], transform.position + transform.forward + transform.up, Quaternion.identity);
+        spawnDroppedItemPrefab.GetComponent<Rigidbody>().AddForce(transform.forward * 10);
+        NetworkServer.Spawn(spawnDroppedItemPrefab);
+        RpcSpawnDroppedItemPrefab(value);
+    }
+    
+    [ClientRpc]
+    public void RpcSpawnDroppedItemPrefab(int value)
+    {
+        item[value].SetActive(false);
     }
     
     void OnWeaponChanged(int _Old, int _New)
@@ -128,10 +160,6 @@ public class CharacterMechanic : NetworkBehaviour
                 break;
             case Item.Syringe:
                 selectedGameObject = 3;
-                CmdChangeActiveWeapon(selectedGameObject);
-                break;
-            default:
-                selectedGameObject = 0;
                 CmdChangeActiveWeapon(selectedGameObject);
                 break;
         }
@@ -172,14 +200,14 @@ public class CharacterMechanic : NetworkBehaviour
         {
             if (hit.collider.gameObject.layer == 8)
             {
-                feedback.SetActive(true);
+                pressE.SetActive(true);
                 
                 InteractWithObject(hit.collider.gameObject);
             }
 
             if (hit.collider.gameObject.layer == 7)
             {
-                feedback.SetActive(true);
+                pressE.SetActive(true);
                 
                 hideableObj = hit.collider.GetComponent<Hideable>();
             
@@ -192,7 +220,7 @@ public class CharacterMechanic : NetworkBehaviour
 
         else
         {
-            feedback.SetActive(false);
+            pressE.SetActive(false);
             
             if (Input.GetKeyDown(KeyCode.E) && player.playerHiding)
             {
@@ -218,6 +246,42 @@ public class CharacterMechanic : NetworkBehaviour
         else
         {
             player.speed = 2;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Poison"))
+        {
+            if (!isPoisonedStage2)
+            {
+                if (!isPoisonedStage1)
+                {
+                    StartCoroutine(PoisonDelay(true, 0));
+                }
+                if (isPoisonedStage1)
+                {
+                    StartCoroutine(PoisonDelay(true, 1));
+                }
+            }
+        }
+    }
+
+    private IEnumerator PoisonDelay(bool value, int i)
+    {
+        yield return new WaitForSeconds(5);
+        
+        if (i == 0)
+        {
+            isPoisonedStage1 = value;
+            poisonImage[i].enabled = true;
+        }
+
+        else if (i == 1)
+        {
+            isPoisonedStage2 = value;
+            poisonImage[i-1].enabled = false;
+            poisonImage[i].enabled = true;
         }
     }
 }
