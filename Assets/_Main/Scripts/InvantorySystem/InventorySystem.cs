@@ -10,12 +10,8 @@ public class InventorySystem : MonoBehaviour
    
     public ItemSlot[] slotGameObject;
    
-    public Sprite[] itemSprite; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Siringa
-
-    private void Start()
-    {
-        AddItemToSlot(0);
-    }
+    public Sprite[] itemSprite; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Siringa // 4 = Null
+    
 
     public void SelectedSlot(int index)
     {
