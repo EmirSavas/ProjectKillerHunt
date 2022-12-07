@@ -15,6 +15,7 @@ public class NetworkManagerLobby : NetworkManager
     [SerializeField] private NetworkRoomPlayerLobby roomPlayerPrefab = null;
     [SerializeField] private NetworkGamePlayerLobby gamePlayerPrefab = null;
      
+     
     [SerializeField] private int minPlayers = 2;
 
     public static event Action OnClientConnected;

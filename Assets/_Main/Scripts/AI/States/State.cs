@@ -100,7 +100,7 @@ namespace StateMachine
                     break;
 
                 case STATE.ACTION:
-                    nextState = new Action(brain, animator);
+                    nextState = new EnemyAction(brain, animator);
                     break;
             }
 
