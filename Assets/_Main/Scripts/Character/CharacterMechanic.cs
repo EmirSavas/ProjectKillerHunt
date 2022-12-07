@@ -30,6 +30,10 @@ public class CharacterMechanic : NetworkBehaviour
     //Debuff
     public bool isPoisonedStage1 = false;
     public bool isPoisonedStage2 = false;
+    public float timerPoison;
+    public float waitToResetPoison;
+    public bool resetPoisonTimer;
+    public bool stateReset = false;
     
     //Item
     public Item selectedItem;
@@ -70,6 +74,8 @@ public class CharacterMechanic : NetworkBehaviour
         FlashChangeState();
 
         PauseMenu();
+        
+        ReducerToPoisonTimer();
     }
 
     private void PauseMenu()
@@ -253,35 +259,76 @@ public class CharacterMechanic : NetworkBehaviour
     {
         if (other.CompareTag("Poison"))
         {
-            if (!isPoisonedStage2)
+            resetPoisonTimer = false;
+            stateReset = false;
+            waitToResetPoison = 0;
+
+            if (timerPoison >= 0 && timerPoison <= 10)
             {
-                if (!isPoisonedStage1)
+                timerPoison += Time.deltaTime;
+                
+                if (timerPoison >= 5)
                 {
-                    StartCoroutine(PoisonDelay(true, 0));
+                    isPoisonedStage1 = true;
+                    poisonImage[0].enabled = true;
+                    poisonImage[1].enabled = false;
                 }
-                if (isPoisonedStage1)
+            
+                if (timerPoison >= 10)
                 {
-                    StartCoroutine(PoisonDelay(true, 1));
+                    isPoisonedStage2 = true;
+                    poisonImage[0].enabled = false;
+                    poisonImage[1].enabled = true;
                 }
             }
         }
     }
 
-    private IEnumerator PoisonDelay(bool value, int i)
+    private void OnTriggerExit(Collider other)
     {
-        yield return new WaitForSeconds(5);
-        
-        if (i == 0)
+        if (other.CompareTag("Poison"))
         {
-            isPoisonedStage1 = value;
-            poisonImage[i].enabled = true;
+            if (timerPoison > 0 && timerPoison < 5)
+            {
+                resetPoisonTimer = true;
+            }
+
+            else if (timerPoison > 5 && timerPoison < 10)
+            {
+                resetPoisonTimer = true;
+                stateReset = true;
+            }
+        }
+    }
+
+    private void ReducerToPoisonTimer()
+    {
+        if (resetPoisonTimer && waitToResetPoison <= 2 && timerPoison != 0)
+        {
+            waitToResetPoison += Time.deltaTime;
         }
 
-        else if (i == 1)
+        if (waitToResetPoison >= 2)
         {
-            isPoisonedStage2 = value;
-            poisonImage[i-1].enabled = false;
-            poisonImage[i].enabled = true;
+            if (timerPoison > 0)
+            {
+                timerPoison -= Time.deltaTime;
+            }
+
+            if (timerPoison < 0)
+            {
+                timerPoison = 0;
+                resetPoisonTimer = false;
+                waitToResetPoison = 0;
+            }
+
+            if (timerPoison < 5 && stateReset)
+            {
+                timerPoison = 5;
+                resetPoisonTimer = false;
+                waitToResetPoison = 0;
+                stateReset = false;
+            }
         }
     }
 }
