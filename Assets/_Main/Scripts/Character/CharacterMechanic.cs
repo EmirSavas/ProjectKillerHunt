@@ -12,7 +12,7 @@ public enum Item
     FLASHLIGHT,
     KEY,
     MEDKIT,
-    Syringe,
+    SYRINGE,
     EMPTY
 }
 
@@ -164,7 +164,7 @@ public class CharacterMechanic : NetworkBehaviour
                 selectedGameObject = 2;
                 CmdChangeActiveWeapon(selectedGameObject);
                 break;
-            case Item.Syringe:
+            case Item.SYRINGE:
                 selectedGameObject = 3;
                 CmdChangeActiveWeapon(selectedGameObject);
                 break;

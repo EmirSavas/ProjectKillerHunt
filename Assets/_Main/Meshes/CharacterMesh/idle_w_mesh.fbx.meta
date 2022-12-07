@@ -6,7 +6,17 @@ ModelImporter:
   - first:
       74: 1827226128182048838
     second: Take 001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasted__pasted___Body
+    second: {fileID: 2100000, guid: e112508c59b6b744790bc2bf73caace1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasted__pasted___Eye_trans
+    second: {fileID: 2100000, guid: 81679e8af6779844aa77e51a1b0593e0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

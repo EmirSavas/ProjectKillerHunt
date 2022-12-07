@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Flashlight : NetworkBehaviour, IInteractable
 {
-    public Light light;
+    public new Light light;
     public bool lightOnOff;
     public Item item = Item.FLASHLIGHT;
     
