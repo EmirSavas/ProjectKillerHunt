@@ -12,9 +12,16 @@ public class Search : State
     public override void Enter()
     {
         Debug.Log("Search Enter");
-        stage = EVENT.NULL;
+        brain.SearchForAllPLayers();
+        stage = EVENT.UPDATE;
 
         //todo Search Animation Play
+    }
+
+    public override void Update()
+    {
+        Debug.Log("Target Player: " + brain.targetPlayer);
+        brain.Path = GoalManager.ChasePlayer(brain.targetPlayer, brain.transform);
     }
 
     public override void Exit()

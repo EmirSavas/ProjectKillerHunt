@@ -40,7 +40,7 @@ public class AIBrain : MonoBehaviour
 
     public void SelectNewPath()
     {
-        var closestPlayer = GoalManager.FindClosestPlayer(_sight, transform); //No Player In Sight
+        var closestPlayer = GoalManager.FindClosestPlayer(_sight, transform);
 
         if (closestPlayer == null)
         {
@@ -52,8 +52,23 @@ public class AIBrain : MonoBehaviour
         targetPlayer = closestPlayer;
     }
 
+    public void SearchForAllPLayers()
+    {
+        var players = GameObject.FindGameObjectsWithTag("Player");
+
+        var random = Random.Range(0, players.Length);
+
+        targetPlayer = players[random].transform;
+    }
+
     private void Update()
     {
         CurrentState.Process();
+
+        if (Vector3.Distance(transform.position, _sight.lastSeenTransform.position) < 3 && targetPlayer == _sight.lastSeenTransform)
+        {
+            Debug.Log("Couldn't Find Player");
+            State.ChangeState(this, State.STATE.SEARCH, _animator);
+        }
     }
 }
