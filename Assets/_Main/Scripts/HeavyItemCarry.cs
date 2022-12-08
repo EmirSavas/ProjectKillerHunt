@@ -1,20 +1,29 @@
+using System;
 using UnityEngine;
 using Mirror;
 
 public class HeavyItemCarry : NetworkBehaviour, IInteractable
 {
     private bool playerCarryThis = false;
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     public void Interact(CharacterMechanic cm)
     {
         if (Input.GetKeyUp(KeyCode.E) && !playerCarryThis)
         {
             CmdCarryItem(true, cm.transform, cm);
+            rb.isKinematic = true;
         }
         
         else if (Input.GetKeyUp(KeyCode.E) && playerCarryThis)
         {
             CmdCarryItem(false, null, cm);
+            rb.isKinematic = false;
         }
     }
 
@@ -33,7 +42,7 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
         
         if (playerCarryThis)
         {
-            transform.localPosition = new Vector3(0, 1, 2);
+            transform.localPosition = new Vector3(0, 0.75f, 2);
         }
 
         cm.CarryHeavyItemChangeSpeed(playerCarryThis);
