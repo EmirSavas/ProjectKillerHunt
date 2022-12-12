@@ -143,7 +143,7 @@ public class NetworkManagerLobby : NetworkManager
             for (int i = roomPlayers.Count - 1; i >= 0 ; i--)
             {
                 var conn = roomPlayers[i].connectionToClient;
-                var gameplayerInstance = Instantiate(gamePlayerPrefab, new Vector3(-3.391495f,-3.05782f,7.71795f), quaternion.identity);
+                var gameplayerInstance = Instantiate(gamePlayerPrefab, new Vector3(-3.391495f,-1.875f,7.71795f), quaternion.identity);
                 gameplayerInstance.SetDisplayName(roomPlayers[i].DisplayName);
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);

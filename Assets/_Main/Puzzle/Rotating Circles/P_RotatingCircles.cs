@@ -10,9 +10,13 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float minSuccessAngle;
     [SerializeField] private float maxSuccessAngle;
+    
+    private int _trueCount;
 
 
     public List<Transform> circles;
+    public bool completed;
+    
     private Color _oldColor; //For Now
     private int _selectedIndex;
     private Transform _selectedCircle;
@@ -60,22 +64,31 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
             circles[_selectedIndex].Rotate(new Vector3(0, Time.deltaTime * rotateSpeed), Space.Self);
         }
 
+        _trueCount = 0;
+
         for (int i = 0; i < circles.Count; i++)
         {
+            var renderer = circles[i].GetChild(0).GetComponent<Renderer>();
+            
             if (circles[i].eulerAngles.x > minSuccessAngle && circles[i].eulerAngles.x < maxSuccessAngle)
             {
-                var renderer = circles[i].GetChild(0).GetComponent<Renderer>();
-            
                 renderer.material.color = Color.green;
-
-                //circles[i].localEulerAngles = Vector3.Lerp(circles[i].eulerAngles, new Vector3(0, 90, 0), 0.5f);
+                
                 circles[i].Rotate(new Vector3(0, 0), Space.Self);
             }
             else
             {
-                var renderer = circles[i].GetChild(0).GetComponent<Renderer>();
-            
                 renderer.material.color = Color.red;
+            }
+
+            if (renderer.material.color == Color.green)
+            {
+                _trueCount++;
+
+                if (_trueCount == circles.Count)
+                {
+                    Completed();
+                }
             }
         }
     }
@@ -90,5 +103,10 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
         var renderer = _selectedCircle.GetComponent<Renderer>();
         _oldColor = renderer.material.color;
         renderer.material.color = Color.yellow;
+    }
+    
+    private void Completed()
+    {
+        completed = true;
     }
 }

@@ -17,6 +17,8 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
     
     public List<RandomSwitch> buttons;
     
+    public bool completed;
+    
     private int _selectedIndex;
     private RandomSwitch _selectedSwitch;
     private Color _oldColor;
@@ -24,7 +26,8 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
     private List<int> _selectSequence = new List<int>();
 
     private int _targetIndex;
-    
+    private int _trueCount;
+
     public void Interact(CharacterMechanic cm)
     {
         //throw new Exception("Not Finished");
@@ -53,7 +56,7 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
     private void Update()
     {
         if(!enabled) return;
-        
+
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, buttons.Count, Mechanics.IncreaseIndex);
@@ -70,9 +73,31 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            
             if(CheckAllSwitch()) OpenSwitch(_selectedSwitch);
             else CloseAllSwitch();
+            
+            CheckForCompletion();
+        }
+    }
+
+    private void CheckForCompletion()
+    {
+        _trueCount = 0;
+        
+        foreach (var button in buttons)
+        {
+            if (button.alarm.material.color == Color.green)
+            {
+                _trueCount++;
+
+                //Debug.Log($"{trueCount} {buttons.Count}");
+                
+                if (_trueCount == buttons.Count)
+                {
+                    Completed();
+                    break;
+                }
+            }
         }
     }
     
@@ -117,6 +142,11 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
         }
 
         _targetIndex = 0;
+    }
+    
+    private void Completed()
+    {
+        completed = true;
     }
 }
 

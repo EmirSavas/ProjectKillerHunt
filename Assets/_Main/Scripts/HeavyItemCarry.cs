@@ -8,6 +8,7 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
 {
     private Rigidbody rb;
     private CharacterMechanic _characterMechanic;
+    private bool _updateBool;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
     {
         if (Input.GetKeyUp(KeyCode.E) && !cm.carryHeavyItem)
         {
+            _updateBool = true;
             _characterMechanic = cm;
             CmdCarryItem(true, _characterMechanic.transform, _characterMechanic);
             rb.isKinematic = true;
@@ -28,12 +30,15 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.E) && _characterMechanic.carryHeavyItem)
+        if (Input.GetKeyUp(KeyCode.E) && _updateBool)
         {
-            CmdCarryItem(false, null, _characterMechanic);
-            rb.isKinematic = false;
-            _characterMechanic.carryHeavyItem = false;
-            StartCoroutine(BackToInteractable());
+            if (_characterMechanic.carryHeavyItem)
+            {
+                CmdCarryItem(false, null, _characterMechanic);
+                rb.isKinematic = false;
+                _characterMechanic.carryHeavyItem = false;
+                StartCoroutine(BackToInteractable());
+            }
         }
     }
 
@@ -41,6 +46,7 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
     {
         yield return new WaitForSeconds(0.25f);
         gameObject.layer = 8;
+        _updateBool = false;
     }
 
     [Command(requiresAuthority = false)]
