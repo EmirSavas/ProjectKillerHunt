@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-    public CharacterMovement cm;
+    public CharacterMovement characterMovement;
+    public CharacterMechanic characterMechanic;
     
     public void Resume()
     {
-        cm.enabled = true;
+        characterMovement.enabled = true;
+        characterMechanic.pauseGame = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
     

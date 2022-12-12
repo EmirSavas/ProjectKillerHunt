@@ -14,6 +14,7 @@ public class CharacterMovement : NetworkBehaviour
     public Animator anim;
     public Transform groundChecker;
     public CinemachineVirtualCamera cam;
+    public CharacterMechanic cm;
 
     //Vertical Movement Values
     public int jumpPower = 1;
@@ -97,10 +98,10 @@ public class CharacterMovement : NetworkBehaviour
         
         _vertical = Input.GetAxis("Vertical");
 
-        if (Input.GetButtonUp("Jump") && _isGrounded)
-        {
-            Jump();
-        }
+        // if (Input.GetButtonUp("Jump") && _isGrounded)
+        // {
+        //     Jump();
+        // }
 
         if (Input.GetButtonUp("Crouch"))
         {
@@ -111,7 +112,7 @@ public class CharacterMovement : NetworkBehaviour
         }
 
         //Run and Stamina
-        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W) && _stamina > 0)
+        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W) && _stamina > 0 && !cm.carryHeavyItem)
         {
             _vertical *= 2;
             _stamina -= Time.deltaTime * staminaRegen;
@@ -165,10 +166,10 @@ public class CharacterMovement : NetworkBehaviour
         }
     }
 
-    private void Jump()
-    {
-        _velocity.y = Mathf.Sqrt(jumpPower * -2 * _gravity);
-    }
+    // private void Jump()
+    // {
+    //     _velocity.y = Mathf.Sqrt(jumpPower * -2 * _gravity);
+    // }
 
     private IEnumerator Crouch()
     {

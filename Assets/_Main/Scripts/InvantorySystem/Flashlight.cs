@@ -24,4 +24,9 @@ public class Flashlight : NetworkBehaviour, IInteractable
     {
         NetworkServer.Destroy(gameObject);
     }
+
+    private void OnDisable()
+    {
+        light.enabled = false;
+    }
 }

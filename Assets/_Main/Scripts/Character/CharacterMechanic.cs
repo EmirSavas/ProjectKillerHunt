@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Mirror;
 using Mirror.Examples.RigidbodyPhysics;
 using Telepathy;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,9 +42,13 @@ public class CharacterMechanic : NetworkBehaviour
     public GameObject[] item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
     public int selectedGameObject;
     public Flashlight _flashlight;
+    public bool carryHeavyItem = false;
 
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced;
+    
+    //PauseMenu
+    public bool pauseGame = false;
 
 
     void Start()
@@ -64,18 +69,24 @@ public class CharacterMechanic : NetworkBehaviour
         {
             return;
         }
-        
-        Raycast();
-
-        DropItemInHand();
-
-        InventorySlotInput();
-
-        FlashChangeState();
 
         PauseMenu();
         
-        ReducerToPoisonTimer();
+        if (!pauseGame)
+        {
+            if (!carryHeavyItem)
+            {
+                Raycast();
+                
+                DropItemInHand();
+
+                InventorySlotInput();
+
+                UseItemInHand();
+            }
+            
+            ReducerToPoisonTimer();
+        }
     }
 
     private void PauseMenu()
@@ -84,18 +95,43 @@ public class CharacterMechanic : NetworkBehaviour
         {
             player.enabled = false;
             Cursor.lockState = CursorLockMode.None;
+            pauseGame = true;
             pauseMenu.SetActive(true);
         }
     }
-    private void FlashChangeState()
+    private void UseItemInHand()
     {
-        if (Input.GetKeyDown(KeyCode.F) && selectedGameObject == 0)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && selectedItem != Item.EMPTY)
         {
-            _flashlight.lightOnOff = !_flashlight.lightOnOff;
-            CmdFlashChangeState(_flashlight.lightOnOff);
+            if (selectedItem == Item.FLASHLIGHT)
+            {
+                _flashlight.lightOnOff = !_flashlight.lightOnOff;
+                CmdFlashChangeState(_flashlight.lightOnOff);
+            }
+            
+            if (selectedItem == Item.MEDKIT)
+            {
+                inventorySystem.DeleteItemToSlot(selectedItem);
+
+                ResetItemInHand();
+            }
+            
+            if (selectedItem == Item.SYRINGE)
+            {
+                inventorySystem.DeleteItemToSlot(selectedItem);
+
+                ResetItemInHand();
+            }
+            
+            if (selectedItem == Item.KEY)
+            {
+                inventorySystem.DeleteItemToSlot(selectedItem);
+
+                ResetItemInHand();
+            }
         }
     }
-    
+
     [Command]
     private void CmdFlashChangeState(bool value)
     {
@@ -115,6 +151,8 @@ public class CharacterMechanic : NetworkBehaviour
             inventorySystem.DeleteItemToSlot(selectedItem);
 
             CmdSpawnDroppedItemPrefab(selectedGameObject);
+
+            ResetItemInHand();
         }
     }
 
@@ -168,10 +206,21 @@ public class CharacterMechanic : NetworkBehaviour
                 selectedGameObject = 3;
                 CmdChangeActiveWeapon(selectedGameObject);
                 break;
+            case Item.EMPTY:
+                selectedGameObject = 4;
+                CmdChangeActiveWeapon(selectedGameObject);
+                break;
         }
     }
 
+    public void ResetItemInHand()
+    {
+        selectedItem = Item.EMPTY;
 
+        selectedGameObject = 4;
+            
+        CmdChangeActiveWeapon(selectedGameObject);
+    }
 
     public void AddItemToInventory(Item item)
     {

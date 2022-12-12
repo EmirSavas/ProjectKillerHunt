@@ -1,11 +1,13 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Mirror;
+using UnityEditor.Experimental.GraphView;
 
 public class HeavyItemCarry : NetworkBehaviour, IInteractable
 {
-    private bool playerCarryThis = false;
     private Rigidbody rb;
+    private CharacterMechanic _characterMechanic;
 
     private void Awake()
     {
@@ -14,17 +16,31 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
 
     public void Interact(CharacterMechanic cm)
     {
-        if (Input.GetKeyUp(KeyCode.E) && !playerCarryThis)
+        if (Input.GetKeyUp(KeyCode.E) && !cm.carryHeavyItem)
         {
-            CmdCarryItem(true, cm.transform, cm);
+            _characterMechanic = cm;
+            CmdCarryItem(true, _characterMechanic.transform, _characterMechanic);
             rb.isKinematic = true;
+            cm.carryHeavyItem = true;
+            gameObject.layer = 2;
         }
-        
-        else if (Input.GetKeyUp(KeyCode.E) && playerCarryThis)
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.E) && _characterMechanic.carryHeavyItem)
         {
-            CmdCarryItem(false, null, cm);
+            CmdCarryItem(false, null, _characterMechanic);
             rb.isKinematic = false;
+            _characterMechanic.carryHeavyItem = false;
+            StartCoroutine(BackToInteractable());
         }
+    }
+
+    private IEnumerator BackToInteractable()
+    {
+        yield return new WaitForSeconds(0.25f);
+        gameObject.layer = 8;
     }
 
     [Command(requiresAuthority = false)]
@@ -36,15 +52,17 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
     [ClientRpc]
     private void RpcCarryItem(bool boolean, Transform _transform, CharacterMechanic cm)
     {
-        playerCarryThis = boolean;
+        cm.ResetItemInHand();
+        
+        _characterMechanic.carryHeavyItem = boolean;
 
         transform.parent = _transform;
         
-        if (playerCarryThis)
+        if (_characterMechanic.carryHeavyItem)
         {
             transform.localPosition = new Vector3(0, 0.75f, 2);
         }
 
-        cm.CarryHeavyItemChangeSpeed(playerCarryThis);
+        cm.CarryHeavyItemChangeSpeed(_characterMechanic.carryHeavyItem);
     }
 }
