@@ -118,9 +118,7 @@ public class CharacterMechanic : NetworkBehaviour
             
             if (selectedItem == Item.SYRINGE)
             {
-                inventorySystem.DeleteItemToSlot(selectedItem);
-
-                ResetItemInHand();
+                HealingPoisonReset();
             }
             
             if (selectedItem == Item.KEY)
@@ -378,6 +376,28 @@ public class CharacterMechanic : NetworkBehaviour
                 waitToResetPoison = 0;
                 stateReset = false;
             }
+        }
+    }
+
+    private void HealingPoisonReset()
+    {
+        if (isPoisonedStage1 && !isPoisonedStage2)
+        {
+            isPoisonedStage1 = false;
+           
+            poisonImage[0].enabled = false;
+            
+            timerPoison = 0;
+           
+            resetPoisonTimer = false;
+           
+            stateReset = false;
+           
+            waitToResetPoison = 0;
+            
+            inventorySystem.DeleteItemToSlot(selectedItem);
+
+            ResetItemInHand();
         }
     }
 }

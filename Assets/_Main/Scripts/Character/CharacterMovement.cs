@@ -78,6 +78,14 @@ public class CharacterMovement : NetworkBehaviour
         CheckGrounded();
         Movement();
         UpdaterAnimatorValues();
+    }
+
+    private void LateUpdate()
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         CameraController();
     }
 
