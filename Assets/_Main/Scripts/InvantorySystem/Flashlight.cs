@@ -19,7 +19,7 @@ public class Flashlight : NetworkBehaviour, IInteractable
         }
     }
     
-    [Server]
+    [Command(requiresAuthority = false)]
     private void CmdInteract()
     {
         NetworkServer.Destroy(gameObject);

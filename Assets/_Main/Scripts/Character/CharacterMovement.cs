@@ -29,7 +29,7 @@ public class CharacterMovement : NetworkBehaviour
     private float _horizontal;
     private float _vertical;
     private bool _move;
-    private float _stamina;
+    private float _stamina = 100;
     public float staminaRegen;
     private Vector3 _velocity;
     private Vector2 _currentMovement;
@@ -50,9 +50,9 @@ public class CharacterMovement : NetworkBehaviour
     //Hiding Values
     public bool playerHiding = false;
 
-    public override void OnStartClient()
+    public void Start()
     {
-        DeathManager.instance.cam.Add(cam);
+        StartCoroutine(LateStart());
 
         if (!isLocalPlayer)
         {
@@ -62,11 +62,15 @@ public class CharacterMovement : NetworkBehaviour
         //DeathManager.instance.FindPlayerCam();
         
         Cursor.lockState = CursorLockMode.Locked;
-        
-        _stamina = 100;
     }
 
-
+    private IEnumerator LateStart()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        DeathManager.instance.cam.Add(cam);
+    }
+    
     private void Update()
     {
         if (!isLocalPlayer)

@@ -29,12 +29,12 @@ public class CharacterMechanic : NetworkBehaviour
     public GameObject pauseMenu;
     
     //Debuff
-    public bool isPoisonedStage1 = false;
-    public bool isPoisonedStage2 = false;
-    public float timerPoison;
-    public float waitToResetPoison;
-    public bool resetPoisonTimer;
-    public bool stateReset = false;
+    private bool isPoisonedStage1 = false;
+    private bool isPoisonedStage2 = false;
+    private float timerPoison;
+    private float waitToResetPoison;
+    private bool resetPoisonTimer;
+    private bool stateReset = false;
     
     //Item
     public Item selectedItem;
@@ -74,10 +74,10 @@ public class CharacterMechanic : NetworkBehaviour
         
         if (!pauseGame)
         {
+            Raycast();
+            
             if (!carryHeavyItem)
             {
-                Raycast();
-                
                 DropItemInHand();
 
                 InventorySlotInput();
@@ -249,7 +249,7 @@ public class CharacterMechanic : NetworkBehaviour
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         
-        if (Physics.Raycast(ray, out RaycastHit hit, 2))
+        if (Physics.Raycast(ray, out RaycastHit hit, 0.65f))
         {
             if (hit.collider.gameObject.layer == 8)
             {

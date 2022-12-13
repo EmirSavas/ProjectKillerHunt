@@ -10,6 +10,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     [Header("UI")] [SerializeField] private GameObject lobbyUI = null;
     [SerializeField] private Text[] playerNameText = new Text[4];
     [SerializeField] private Text[] playerReadyTexts = new Text[4];
+    [SerializeField] private Text readyButton = null;
     [SerializeField] private Button startGameButton = null;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))]
@@ -119,6 +120,16 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     public void CmdReadyUp()
     {
         IsReady = !IsReady;
+
+        if (IsReady)
+        {
+            readyButton.text = "Not Ready";
+        }
+
+        else
+        {
+            readyButton.text = "Ready";
+        }
 
         Room.NotifyPlayersOfReadyState();
     }

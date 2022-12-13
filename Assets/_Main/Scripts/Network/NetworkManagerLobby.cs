@@ -12,8 +12,8 @@ public class NetworkManagerLobby : NetworkManager
 
     [SerializeField] private NetworkRoomPlayerLobby roomPlayerPrefab = null;
     [SerializeField] private NetworkGamePlayerLobby gamePlayerPrefab = null;
-     
-     
+
+
     [SerializeField] private int minPlayers = 2;
 
     public static event Action OnClientConnected;
@@ -22,20 +22,20 @@ public class NetworkManagerLobby : NetworkManager
     public List<NetworkRoomPlayerLobby> roomPlayers { get; } = new List<NetworkRoomPlayerLobby>();
     public List<NetworkGamePlayerLobby> gamePlayers = new List<NetworkGamePlayerLobby>();
 
-    public override void OnStartServer()
-    {
-        spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
-    }
+    // public override void OnStartServer()
+    // {
+    //     spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
+    // }
 
-    public override void OnStartClient()
-    {
-        var spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
-
-        foreach (var prefab in spawnablePrefabs)
-        {
-            NetworkClient.RegisterPrefab(prefab);
-        }
-    }
+    // public override void OnStartClient()
+    // {
+    //     var spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
+    //
+    //     foreach (var prefab in spawnablePrefabs)
+    //     {
+    //         NetworkClient.RegisterPrefab(prefab);
+    //     }
+    // }
 
     public override void OnClientConnect()
     {

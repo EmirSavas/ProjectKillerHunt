@@ -1837,14 +1837,14 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 4
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 1111536091719389891, guid: 169551bb01ad9a547b6023e29a29270f,
+  playerPrefab: {fileID: 2808495376407281653, guid: f8db4d3571a69c341be0d0f2dd936047,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
   roomPlayerPrefab: {fileID: 6904638964617479091, guid: 3876902498aa335489ee0dfc103c9c7c,
     type: 3}
-  gamePlayerPrefab: {fileID: 4854569194995287421, guid: 169551bb01ad9a547b6023e29a29270f,
+  gamePlayerPrefab: {fileID: -3432112306792294613, guid: 169551bb01ad9a547b6023e29a29270f,
     type: 3}
   minPlayers: 1
   gamePlayers: []
