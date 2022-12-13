@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Flashlight : NetworkBehaviour, IInteractable
 {
-    public new Light light;
+    public Light light;
     public bool lightOnOff;
     public Item item = Item.FLASHLIGHT;
 

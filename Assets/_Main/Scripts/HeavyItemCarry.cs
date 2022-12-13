@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Mirror;
-using UnityEditor.Experimental.GraphView;
 
 public class HeavyItemCarry : NetworkBehaviour, IInteractable
 {

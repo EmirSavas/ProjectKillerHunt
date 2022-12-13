@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mirror;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,23 +20,26 @@ public class NetworkManagerLobby : NetworkManager
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
 
-    public List<NetworkRoomPlayerLobby> roomPlayers { get; } = new List<NetworkRoomPlayerLobby>();
+    public List<NetworkRoomPlayerLobby> roomPlayers = new List<NetworkRoomPlayerLobby>();
     public List<NetworkGamePlayerLobby> gamePlayers = new List<NetworkGamePlayerLobby>();
 
-    // public override void OnStartServer()
-    // {
-    //     spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
-    // }
+    public Vector3 spawnPoint;
+    
 
-    // public override void OnStartClient()
-    // {
-    //     var spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
-    //
-    //     foreach (var prefab in spawnablePrefabs)
-    //     {
-    //         NetworkClient.RegisterPrefab(prefab);
-    //     }
-    // }
+    public override void OnStartServer()
+    {
+        spawnPrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
+    }
+
+    public override void OnStartClient()
+    {
+        var spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
+    
+        foreach (var prefab in spawnablePrefabs)
+        {
+            NetworkClient.RegisterPrefab(prefab);
+        }
+    }
 
     public override void OnClientConnect()
     {
@@ -143,7 +147,28 @@ public class NetworkManagerLobby : NetworkManager
             for (int i = roomPlayers.Count - 1; i >= 0 ; i--)
             {
                 var conn = roomPlayers[i].connectionToClient;
-                var gameplayerInstance = Instantiate(gamePlayerPrefab, new Vector3(-3.391495f,-1.875f,7.71795f), quaternion.identity);
+                
+                if (roomPlayers.Count == 1)
+                {
+                    spawnPoint = new Vector3(-3.036f,-1.8f,7.65f);
+                }
+                
+                else if(roomPlayers.Count == 2)
+                {
+                    spawnPoint = new Vector3(-1.391495f,-1.8f,8.1f);
+                }
+                
+                else if(roomPlayers.Count == 3)
+                {
+                    spawnPoint = new Vector3(1.391495f,-1.8f,8.5f);
+                }
+                
+                else if(roomPlayers.Count == 4)
+                {
+                    spawnPoint = new Vector3(-5.391495f,-1.8f,9);
+                }
+                
+                var gameplayerInstance = Instantiate(gamePlayerPrefab, spawnPoint, quaternion.identity);
                 gameplayerInstance.SetDisplayName(roomPlayers[i].DisplayName);
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);
