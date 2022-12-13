@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -6,11 +7,19 @@ using UnityEngine;
 
 public class MissionManager : MonoBehaviour
 {
+    private static MissionManager instance;
+    public static MissionManager Instance { get { return instance; } }
+    
     public List<string> missions;
 
     public TextMeshProUGUI missionText;
 
-    private int missionIndex;
+    private int _missionIndex;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -25,24 +34,24 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SetNextMission()
+    public IEnumerator SetNextMission()
     {
-        missionIndex++;
+        _missionIndex++;
 
         missionText.text = MissionFormatter();
         
         // yield return DOTween.ToAlpha(()=> missionText.color, x=> missionText.color = x, 255, 5).WaitForCompletion();
         //
         // yield return new WaitForSeconds(2f);
-        
-        DOTween.ToAlpha(()=> missionText.color, x=> missionText.color = x, 0, 5);
+        //
+        // DOTween.ToAlpha(()=> missionText.color, x=> missionText.color = x, 0, 5);
 
         yield return null;
     }
 
     private string MissionFormatter()
     {
-        var text = "-" + missions[missionIndex];
+        var text = "-" + missions[_missionIndex];
 
         return text;
     }

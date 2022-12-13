@@ -1753,7 +1753,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  speed: 2
+  speed: 0.8
   movementSmoothTime: 0.05
   staminaRegen: 4
   mouseSensivity: 120

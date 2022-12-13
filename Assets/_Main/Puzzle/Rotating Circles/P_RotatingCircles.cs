@@ -35,6 +35,10 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
         //throw new Exception("Not Finished");
         //todo Zoom Player
 
+        var player = FindObjectOfType<CharacterController>();
+
+        player.enabled = !player.enabled;
+
         enabled = !enabled;
     }
     private void Update()

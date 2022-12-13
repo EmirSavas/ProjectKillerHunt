@@ -195,8 +195,8 @@ public class AISight : MonoBehaviour
 
     private void OnValidate()
     {
-        _mesh = CreateWedgeMesh();
-        _scanInterval = 1.0f / scanFrequency;
+        // _mesh = CreateWedgeMesh();
+        // _scanInterval = 1.0f / scanFrequency;
     }
 
     private void OnDrawGizmos()
