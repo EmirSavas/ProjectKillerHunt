@@ -24,15 +24,9 @@ namespace GenericPuzzleMechanics
         {
             value = changeIndexValue(value);
 
-            if (value == maxValue)
-            {
-                value = minValue;
-            }
+            value = value == maxValue ? minValue : value;
 
-            else if (value < minValue)
-            {
-                value = maxValue - 1;
-            }
+            value = value < minValue ? maxValue - 1 : value;
 
             return value;
         }
