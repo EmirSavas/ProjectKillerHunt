@@ -150,22 +150,22 @@ public class NetworkManagerLobby : NetworkManager
                 
                 if (roomPlayers.Count == 1)
                 {
-                    spawnPoint = new Vector3(-3.036f,-1.8f,7.65f);
+                    spawnPoint = new Vector3(-248.56f,63.511f, -27.32f);
                 }
                 
                 else if(roomPlayers.Count == 2)
                 {
-                    spawnPoint = new Vector3(-1.391495f,-1.8f,8.1f);
+                    spawnPoint = new Vector3(-238.88f,63.511f, -27.32f);
                 }
                 
                 else if(roomPlayers.Count == 3)
                 {
-                    spawnPoint = new Vector3(1.391495f,-1.8f,8.5f);
+                    spawnPoint = new Vector3(-227.3f,63.511f,-38.28f);
                 }
                 
                 else if(roomPlayers.Count == 4)
                 {
-                    spawnPoint = new Vector3(-5.391495f,-1.8f,9);
+                    spawnPoint = new Vector3(-257.85f,63.511f,-38.28f);
                 }
                 
                 var gameplayerInstance = Instantiate(gamePlayerPrefab, spawnPoint, quaternion.identity);
