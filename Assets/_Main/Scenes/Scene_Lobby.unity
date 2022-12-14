@@ -885,7 +885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &477376171
 RectTransform:
   m_ObjectHideFlags: 0
@@ -904,7 +904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 542.2, y: -1.9}
+  m_AnchoredPosition: {x: 661, y: -1.9}
   m_SizeDelta: {x: 89.3199, y: 46.696}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477376172
@@ -1276,7 +1276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 449, y: -1.9}
+  m_AnchoredPosition: {x: 324, y: -1.9}
   m_SizeDelta: {x: 89.3199, y: 46.696}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &743943710
@@ -1847,7 +1847,9 @@ MonoBehaviour:
   gamePlayerPrefab: {fileID: -3432112306792294613, guid: 169551bb01ad9a547b6023e29a29270f,
     type: 3}
   minPlayers: 1
+  roomPlayers: []
   gamePlayers: []
+  spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &1161932316
 MonoBehaviour:
   m_ObjectHideFlags: 0
