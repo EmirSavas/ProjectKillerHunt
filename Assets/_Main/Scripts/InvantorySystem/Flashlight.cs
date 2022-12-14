@@ -8,7 +8,7 @@ public class Flashlight : NetworkBehaviour, IInteractable
     public bool lightOnOff;
     public Item item = Item.FLASHLIGHT;
 
-    public void Interact(CharacterMechanic cm)
+    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
         if (Input.GetKeyDown(KeyCode.E))
         {

@@ -30,7 +30,7 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
             circle.Rotate(new Vector3(0, Random.Range(0, 360)));
         }
     }
-    public void Interact(CharacterMechanic cm)
+    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
         //throw new Exception("Not Finished");
         //todo Zoom Player

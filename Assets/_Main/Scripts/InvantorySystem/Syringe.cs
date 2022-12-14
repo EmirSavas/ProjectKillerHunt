@@ -5,7 +5,7 @@ public class Syringe : NetworkBehaviour, IInteractable
 {
     public Item item = Item.SYRINGE;
     
-    public void Interact(CharacterMechanic cm)
+    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
         if (Input.GetKeyDown(KeyCode.E))
         {

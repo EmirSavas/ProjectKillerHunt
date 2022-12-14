@@ -12,7 +12,7 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Interact(CharacterMechanic cm)
+    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
         if (Input.GetKeyUp(KeyCode.E) && !cm.carryHeavyItem)
         {

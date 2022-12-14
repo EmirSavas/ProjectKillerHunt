@@ -286,7 +286,7 @@ public class CharacterMechanic : NetworkBehaviour
     {
         if (colliderGameObject.TryGetComponent(out IInteractable interactableObj))
         {
-            interactableObj.Interact(this);
+            interactableObj.Interact(this, player);
         }
     }
 

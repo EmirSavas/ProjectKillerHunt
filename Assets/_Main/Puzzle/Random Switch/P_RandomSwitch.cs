@@ -28,7 +28,7 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
     private int _targetIndex;
     private int _trueCount;
 
-    public void Interact(CharacterMechanic cm)
+    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
         //throw new Exception("Not Finished");
         //todo Zoom Player

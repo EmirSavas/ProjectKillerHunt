@@ -8,7 +8,7 @@ public class Medkit : NetworkBehaviour, IInteractable
 {
     public Item item = Item.MEDKIT;
     
-    public void Interact(CharacterMechanic cm)
+    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
