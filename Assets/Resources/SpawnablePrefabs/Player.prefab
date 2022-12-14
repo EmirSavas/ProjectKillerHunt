@@ -5196,9 +5196,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4153382664590133495}
-  m_LocalRotation: {x: -0, y: 0.00000011920926, z: 0.00000023841852, w: 1}
+  m_LocalRotation: {x: -0.000000029802315, y: 0.00000014901158, z: 0.00000029802317,
+    w: 1}
   m_LocalPosition: {x: -0.21567298, y: 0.65268505, z: 0.3680778}
-  m_LocalScale: {x: 0.20000008, y: 0.20000002, z: 0.20000005}
+  m_LocalScale: {x: 0.20000012, y: 0.2, z: 0.20000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8430167208408808121}
@@ -5211,7 +5212,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4153382664590133495}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
@@ -9937,7 +9938,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   light: {fileID: 4153382664590133600}
-  lightOnOff: 1
+  lightOnOff: 0
   item: 0
 --- !u!114 &8320190391398471152
 MonoBehaviour:
