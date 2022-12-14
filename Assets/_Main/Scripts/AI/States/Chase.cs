@@ -15,6 +15,7 @@ public class Chase : State
         stage = EVENT.UPDATE;
 
         //todo Chase Animation Play
+        anim.SetBool("Walk", true);
     }
 
     public override void Update()
@@ -34,6 +35,7 @@ public class Chase : State
     public override void Exit()
     {
         Debug.Log("Chase Exit");
+        anim.SetBool("Walk", false);
         //todo Chase Animation Stop
         
         if(nextState == null) throw new NullReferenceException("Next State Is Null");
