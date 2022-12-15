@@ -19,6 +19,8 @@ public class ChaserBehaviour : AIBehaviour
 
     private AIBrain _brain;
 
+    private bool tresd;
+
 
     private void Start()
     {
@@ -43,7 +45,12 @@ public class ChaserBehaviour : AIBehaviour
 
     private void Update()
     {
-        if (Time.realtimeSinceStartup > 15)
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            tresd = !tresd;
+        }
+
+        if (tresd)
         {
             Movement();
         }

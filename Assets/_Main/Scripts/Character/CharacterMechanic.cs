@@ -249,7 +249,7 @@ public class CharacterMechanic : NetworkBehaviour
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         
-        if (Physics.SphereCast(ray, 0.1f ,out RaycastHit hit, 2))
+        if (Physics.SphereCast(ray, 0.25f ,out RaycastHit hit, 2))
         {
             if (hit.collider.gameObject.layer == 8)
             {

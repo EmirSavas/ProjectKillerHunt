@@ -35,35 +35,31 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
         //throw new Exception("Not Finished");
         //todo Zoom Player
 
-        var player = FindObjectOfType<CharacterController>();
-
-        player.enabled = !player.enabled;
-
         enabled = !enabled;
     }
     private void Update()
     {
         if(!enabled) return;
         
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, circles.Count, Mechanics.IncreaseIndex);
             
             ChangeCircleSelection(_selectedIndex);
         }
         
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, circles.Count, Mechanics.DecreaseIndex);
             
             ChangeCircleSelection(_selectedIndex);
         }
         
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.J))
         {
             circles[_selectedIndex].Rotate(new Vector3(0, Time.deltaTime * -rotateSpeed), Space.Self);
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.L))
         {
             circles[_selectedIndex].Rotate(new Vector3(0, Time.deltaTime * rotateSpeed), Space.Self);
         }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class P_CarryObject : MonoBehaviour
@@ -6,7 +7,7 @@ public class P_CarryObject : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.name == "PA_04_GasCanister_01")
+        if (other.gameObject.layer == LayerMask.NameToLayer("Interactable"))
         {
             Completed();
         }

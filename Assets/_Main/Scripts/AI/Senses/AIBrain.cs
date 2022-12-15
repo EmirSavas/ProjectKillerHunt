@@ -1,6 +1,9 @@
+using System;
+using Cinemachine;
 using StateMachine;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [AddComponentMenu("AI/AI Brain")]
 public class AIBrain : MonoBehaviour
@@ -11,6 +14,8 @@ public class AIBrain : MonoBehaviour
     
     public NavMeshPath Path;
     public State CurrentState;
+
+    public Transform jsRef;
 
     [HideInInspector] public float initialCooldown;
     [HideInInspector] public Transform targetPlayer;
@@ -69,6 +74,26 @@ public class AIBrain : MonoBehaviour
         {
             Debug.Log("Couldn't Find Player");
             State.ChangeState(this, State.STATE.SEARCH, _animator);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+
+            var agent = GetComponent<ChaserBehaviour>().Agent;
+            agent.speed = 0;
+            agent.velocity = Vector3.zero;
+            
+            
+            _animator.SetTrigger("Kill");
+            other.GetComponent<CharacterController>().enabled = false;
+            var cm = FindObjectOfType<CinemachineVirtualCamera>();
+            cm.m_Lens.NearClipPlane = 0.01f;
+            other.transform.parent = jsRef;
+            other.transform.localPosition = Vector3.zero;
+            other.transform.localEulerAngles = Vector3.zero;   
         }
     }
 }

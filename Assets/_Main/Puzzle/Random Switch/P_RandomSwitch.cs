@@ -57,14 +57,14 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
     {
         if(!enabled) return;
 
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, buttons.Count, Mechanics.IncreaseIndex);
             
             ChangeButtonSelection(_selectedIndex);
         }
         
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, buttons.Count, Mechanics.DecreaseIndex);
             
