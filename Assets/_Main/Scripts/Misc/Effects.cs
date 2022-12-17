@@ -1,18 +1,36 @@
-using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Effects : MonoBehaviour
+public static class Effects
 {
-    private static Effects instance;
-    public static Effects Instance { get { return instance; } }
-
-    private void Awake()
+    public static void PoisonEffect(UseType type, Image poisonImage, float poisonTimer)
     {
-        instance = this;
+        switch (type)
+        {
+            case UseType.ADD:
+                poisonImage.enabled = true;
+                break;
+            
+            case UseType.REMOVE:
+                poisonImage.enabled = false;
+                poisonTimer = 0;
+                break;
+        }
     }
-
-    public void FadeOut(Color obj)
+    
+    public static void ExhaustedEffect(UseType type, CharacterMovement movement)
     {
-        DOTween.ToAlpha(()=> obj, x=> obj = x, 0, 5);
+        switch (type)
+        {
+            case UseType.ADD:
+                Debug.Log("EXHAUSTED");
+                movement.speed = 1;
+                break;
+            
+            case UseType.REMOVE:
+                Debug.Log("NO EXHAUSTED");
+                movement.speed = 2;
+                break;
+        }
     }
 }

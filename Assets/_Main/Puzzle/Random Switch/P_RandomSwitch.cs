@@ -47,7 +47,7 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
 
         for (int i = 0; i < _selectSequence.Count; i++)
         {
-            Debug.Log(_selectSequence[i]);
+            //Debug.Log(_selectSequence[i]);
         }
 
         ChangeButtonSelection(_selectedIndex);

@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Mirror;
-using Mirror.Examples.RigidbodyPhysics;
-using Telepathy;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,27 +17,18 @@ public class CharacterMechanic : NetworkBehaviour
     //Companents
     public Image[] poisonImage;
     public CharacterMovement player;
-    private Hideable hideableObj;
     public GameObject pressE;
     public InventorySystem inventorySystem;
-    public Transform hand;
     public GameObject pauseMenu;
-    
-    //Debuff
-    private bool isPoisonedStage1 = false;
-    private bool isPoisonedStage2 = false;
-    private float timerPoison;
-    private float waitToResetPoison;
-    private bool resetPoisonTimer;
-    private bool stateReset = false;
-    
+
+    private Hideable _hideableObj;
+
     //Item
     public Item selectedItem;
     public List<GameObject> droppedItemPrefab;
     public GameObject[] item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
     public int selectedGameObject;
     public Flashlight _flashlight;
-    public bool carryHeavyItem = false;
 
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced;
@@ -76,7 +62,7 @@ public class CharacterMechanic : NetworkBehaviour
         {
             Raycast();
             
-            if (!carryHeavyItem)
+            if (!StatusEffect.ContainStatusEffect(StatusEffectType.SLOW, GetComponent<PlayerStatusEffectHandler>()))
             {
                 DropItemInHand();
 
@@ -85,7 +71,7 @@ public class CharacterMechanic : NetworkBehaviour
                 UseItemInHand();
             }
             
-            ReducerToPoisonTimer();
+            //ReducerToPoisonTimer();
         }
     }
 
@@ -118,7 +104,7 @@ public class CharacterMechanic : NetworkBehaviour
             
             if (selectedItem == Item.SYRINGE)
             {
-                HealingPoisonReset();
+                StatusEffect.RemoveStatusEffect(StatusEffectType.POISON, GetComponent<PlayerStatusEffectHandler>());
             }
             
             if (selectedItem == Item.KEY)
@@ -262,11 +248,11 @@ public class CharacterMechanic : NetworkBehaviour
             {
                 pressE.SetActive(true);
                 
-                hideableObj = hit.collider.GetComponent<Hideable>();
+                _hideableObj = hit.collider.GetComponent<Hideable>();
             
                 if (Input.GetKeyDown(KeyCode.E) && !player.playerHiding)
                 {
-                    hideableObj.CheckPlayer(netIdentity);
+                    _hideableObj.CheckPlayer(netIdentity);
                 }
             }
         }
@@ -277,7 +263,7 @@ public class CharacterMechanic : NetworkBehaviour
             
             if (Input.GetKeyDown(KeyCode.E) && player.playerHiding)
             {
-                hideableObj.CheckPlayer(netIdentity);
+                _hideableObj.CheckPlayer(netIdentity);
             }
         }
     }
@@ -287,117 +273,6 @@ public class CharacterMechanic : NetworkBehaviour
         if (colliderGameObject.TryGetComponent(out IInteractable interactableObj))
         {
             interactableObj.Interact(this, player);
-        }
-    }
-
-    public void CarryHeavyItemChangeSpeed(bool value)
-    {
-        if (value)
-        {
-            player.speed = 1;
-        }
-        else
-        {
-            player.speed = 2;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Poison"))
-        {
-            resetPoisonTimer = false;
-            stateReset = false;
-            waitToResetPoison = 0;
-
-            if (timerPoison >= 0 && timerPoison <= 10)
-            {
-                timerPoison += Time.deltaTime;
-                
-                if (timerPoison >= 5)
-                {
-                    isPoisonedStage1 = true;
-                    poisonImage[0].enabled = true;
-                    poisonImage[1].enabled = false;
-                }
-            
-                if (timerPoison >= 10)
-                {
-                    isPoisonedStage2 = true;
-                    poisonImage[0].enabled = false;
-                    poisonImage[1].enabled = true;
-                }
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Poison"))
-        {
-            if (timerPoison > 0 && timerPoison < 5)
-            {
-                resetPoisonTimer = true;
-            }
-
-            else if (timerPoison > 5 && timerPoison < 10)
-            {
-                resetPoisonTimer = true;
-                stateReset = true;
-            }
-        }
-    }
-
-    private void ReducerToPoisonTimer()
-    {
-        if (resetPoisonTimer && waitToResetPoison <= 2 && timerPoison != 0)
-        {
-            waitToResetPoison += Time.deltaTime;
-        }
-
-        if (waitToResetPoison >= 2)
-        {
-            if (timerPoison > 0)
-            {
-                timerPoison -= Time.deltaTime;
-            }
-
-            if (timerPoison < 0)
-            {
-                timerPoison = 0;
-                resetPoisonTimer = false;
-                waitToResetPoison = 0;
-            }
-
-            if (timerPoison < 5 && stateReset)
-            {
-                timerPoison = 5;
-                resetPoisonTimer = false;
-                waitToResetPoison = 0;
-                stateReset = false;
-            }
-        }
-    }
-
-    private void HealingPoisonReset()
-    {
-        if (isPoisonedStage1 && !isPoisonedStage2)
-        {
-            isPoisonedStage1 = false;
-           
-            poisonImage[0].enabled = false;
-            
-            timerPoison = 0;
-           
-            resetPoisonTimer = false;
-           
-            stateReset = false;
-           
-            waitToResetPoison = 0;
-            
-            inventorySystem.DeleteItemToSlot(selectedItem);
-
-            ResetItemInHand();
         }
     }
 }

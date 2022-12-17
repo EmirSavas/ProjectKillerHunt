@@ -124,7 +124,7 @@ public class CharacterMovement : NetworkBehaviour
         }
 
         //Run and Stamina
-        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W) && _stamina > 0 && !cm.carryHeavyItem)
+        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W) && _stamina > 0 && !StatusEffect.ContainStatusEffect(StatusEffectType.SLOW, GetComponent<PlayerStatusEffectHandler>()))
         {
             _vertical *= 2;
             _stamina -= Time.deltaTime * staminaRegen;

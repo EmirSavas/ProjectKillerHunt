@@ -14,17 +14,15 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
 
     public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
-        if (Input.GetKeyUp(KeyCode.E) && !cm.carryHeavyItem)
+        if (Input.GetKeyUp(KeyCode.E))
         {
             CmdCarryItem(true, cm.transform, cm);
             rb.isKinematic = true;
-            cm.carryHeavyItem = true;
         }
         
-        if (Input.GetMouseButton(0) && cm.carryHeavyItem)
+        if (Input.GetMouseButton(0))
         {
             rb.isKinematic = false;
-            cm.carryHeavyItem = false;
             CmdCarryItem(false, null, cm);
         }
     }
@@ -41,16 +39,16 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
     private void RpcCarryItem(bool boolean, Transform _transform, CharacterMechanic cm)
     {
         cm.ResetItemInHand();
-        
-        cm.carryHeavyItem = boolean;
 
         transform.parent = _transform;
-        
-        if (cm.carryHeavyItem)
+
+        if (boolean)
         {
             transform.localPosition = new Vector3(0, 0.75f, 1.25f);
+            StatusEffect.AddStatusEffect(StatusEffectType.SLOW, cm.gameObject.GetComponent<PlayerStatusEffectHandler>());
+            return;
         }
-
-        cm.CarryHeavyItemChangeSpeed(cm.carryHeavyItem);
+        
+        StatusEffect.RemoveStatusEffect(StatusEffectType.SLOW, cm.gameObject.GetComponent<PlayerStatusEffectHandler>());
     }
 }
