@@ -19,7 +19,11 @@ MonoBehaviour:
     width: 2560
     height: 1357
   m_ShowMode: 4
+<<<<<<< Updated upstream
   m_Title: Inspector
+=======
+  m_Title: Scene
+>>>>>>> Stashed changes
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -218,12 +222,21 @@ MonoBehaviour:
     height: 922
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
+<<<<<<< Updated upstream
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
   - {fileID: 16}
   m_Selected: 0
   m_LastSelected: 1
+=======
+  m_ActualView: {fileID: 14}
+  m_Panes:
+  - {fileID: 12}
+  - {fileID: 14}
+  m_Selected: 1
+  m_LastSelected: 0
+>>>>>>> Stashed changes
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -234,7 +247,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+<<<<<<< Updated upstream
   m_Name: GameView
+=======
+  m_Name: ConsoleWindow
+>>>>>>> Stashed changes
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -249,6 +266,20 @@ MonoBehaviour:
   m_Panes:
   - {fileID: 13}
   m_Selected: 0
+=======
+    x: 0
+    y: 597
+    width: 1523
+    height: 342
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 16}
+  m_Panes:
+  - {fileID: 15}
+  - {fileID: 16}
+  - {fileID: 17}
+  m_Selected: 1
+>>>>>>> Stashed changes
   m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
@@ -368,7 +399,7 @@ MonoBehaviour:
     m_HSlider: 1
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -676,7 +707,7 @@ MonoBehaviour:
   m_WindowGUID: 7521fc4fb17fa6d44ab94314b343f9cc
   m_Gizmos: 0
   m_OverrideSceneCullingMask: 6917529027641081856
-  m_SceneIsLit: 1
+  m_SceneIsLit: 0
   m_SceneLighting: 1
   m_2DMode: 0
   m_isRotationLocked: 0
@@ -887,7 +918,7 @@ MonoBehaviour:
     m_SceneHandles: 
     m_ShowAllHits: 0
     m_SkipHidden: 0
-    m_SearchArea: 1
+    m_SearchArea: 0
     m_Folders:
     - Assets/_Main/Scripts/AI
     m_Globs: []
@@ -899,6 +930,11 @@ MonoBehaviour:
   m_LastFoldersGridSize: -1
   m_LastProjectPath: "C:\\Users\\user\\Desktop\\B\u0130T\u0130RME PROJES\u0130\\GAME
     DEVELOPMENT\\PROJECT\\ProjectKillerHunt"
+=======
+  - Assets/_Main/Scenes
+  m_LastFoldersGridSize: 16
+  m_LastProjectPath: C:\Users\Raichus\Desktop\ProjectKillerHunt
+>>>>>>> Stashed changes
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
@@ -964,18 +1000,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c6230000de920000e4920000000000006a38000018600300
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Player
+      m_OriginalName: Player
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 31742
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_CreateAssetUtility:
