@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -26,16 +27,20 @@ public static class Effects
     
     public static void ExhaustedEffect(UseType type, CharacterMovement movement)
     {
+        float fov = movement.cam.m_Lens.FieldOfView;
+
         switch (type)
         {
             case UseType.ADD:
-                Debug.Log("EXHAUSTED");
+                Debug.Log("NO EXHAUSTED");
                 movement.speed = 1;
+                DOTween.To(()=> fov, x=> fov = x, 40, 1).OnUpdate(() => movement.cam.m_Lens.FieldOfView = fov);
                 break;
             
             case UseType.REMOVE:
-                Debug.Log("NO EXHAUSTED");
+                Debug.Log("EXHAUSTED");
                 movement.speed = 2;
+                DOTween.To(()=> fov, x=> fov = x, 60, 1).OnUpdate(() => movement.cam.m_Lens.FieldOfView = fov);
                 break;
         }
     }

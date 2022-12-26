@@ -33,12 +33,12 @@ public class PlayerStatusEffectHandler : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.U))
         {
-            StatusEffect.AddStatusEffect(StatusEffectType.POISON, this);
+            StatusEffect.AddStatusEffect(StatusEffectType.SLOW, this);
         }
         
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            StatusEffect.RemoveStatusEffect(StatusEffectType.POISON, this);
+            StatusEffect.RemoveStatusEffect(StatusEffectType.SLOW, this);
         }
     }
     
