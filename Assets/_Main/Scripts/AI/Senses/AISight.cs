@@ -39,6 +39,8 @@ public class AISight : MonoBehaviour
     {
         //lastSeenTransform = new GameObject("Last Seen").transform; todo On Validate Problem
         
+        lastSeenTransform.SetParent(null);
+        
         _scanInterval = 1.0f / scanFrequency;
     }
 
@@ -196,7 +198,6 @@ public class AISight : MonoBehaviour
     private void OnValidate()
     {
         _mesh = CreateWedgeMesh();
-        _scanInterval = 1.0f / scanFrequency;
     }
 
     private void OnDrawGizmos()

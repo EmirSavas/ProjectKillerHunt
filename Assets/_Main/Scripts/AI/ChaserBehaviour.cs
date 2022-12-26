@@ -4,22 +4,18 @@ using UnityEngine.AI;
 
 public class ChaserBehaviour : AIBehaviour
 {
-    public override PointData PointData { get { return pointData;} set{} }
     protected override Transform Target { get; set; }
     public override NavMeshAgent Agent { get; set; }
     protected override List<Transform> Players { get; set; }
-
     protected override AIStats Stats { get; set; }
 
     public AIStats stats;
-
-    public PointData pointData;
 
     private AISight _sight;
 
     private AIBrain _brain;
 
-    private bool tresd;
+    private bool _canMove;
 
 
     private void Start()
@@ -47,10 +43,10 @@ public class ChaserBehaviour : AIBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            tresd = !tresd;
+            _canMove = !_canMove;
         }
 
-        if (tresd)
+        if (_canMove)
         {
             Movement();
         }

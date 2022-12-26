@@ -1879,7 +1879,6 @@ MonoBehaviour:
   - {fileID: 219261676933920028}
   selectedGameObject: 4
   _flashlight: {fileID: 8320190391398471167}
-  carryHeavyItem: 0
   activeWeaponSynced: 1
   pauseGame: 0
 --- !u!95 &7031934215895422301
@@ -1928,7 +1927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e66754f92587e04cb4340d04a436ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkFrequency: 1
+  baseCheckFrequency: 1
   poisonImage:
   - {fileID: 3341873900382312906}
   - {fileID: 9165253937257316655}

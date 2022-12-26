@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 public abstract class AIBehaviour : MonoBehaviour
 {
-    public abstract PointData PointData { get; set; }
     protected abstract Transform Target { get; set; }
     public abstract NavMeshAgent Agent { get; set; }
     protected abstract List<Transform> Players { get; set; }

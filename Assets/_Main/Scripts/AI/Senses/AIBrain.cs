@@ -61,6 +61,12 @@ public class AIBrain : MonoBehaviour
     {
         var players = GameObject.FindGameObjectsWithTag("Player");
 
+        if (players.Length <= 0)
+        {
+            Debug.LogWarning("There is no player in game");
+            return;
+        }
+        
         var random = Random.Range(0, players.Length);
 
         targetPlayer = players[random].transform;

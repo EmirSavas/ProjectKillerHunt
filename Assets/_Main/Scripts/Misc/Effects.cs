@@ -1,14 +1,20 @@
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public static class Effects
 {
-    public static void PoisonEffect(UseType type, Image poisonImage, float poisonTimer)
+    public static void PoisonEffect(UseType type, Image poisonImage, float poisonTimer, Volume volume)
     {
         switch (type)
         {
             case UseType.ADD:
                 poisonImage.enabled = true;
+                if (volume.profile.TryGet(out Vignette vignette))
+                {
+                    vignette.color = new ColorParameter(Color.green, true);
+                }
                 break;
             
             case UseType.REMOVE:

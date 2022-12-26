@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PlayerStatusEffectHandler : MonoBehaviour
@@ -32,12 +33,12 @@ public class PlayerStatusEffectHandler : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.U))
         {
-            StatusEffect.AddStatusEffect(StatusEffectType.SLOW, this);
+            StatusEffect.AddStatusEffect(StatusEffectType.POISON, this);
         }
         
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            StatusEffect.RemoveStatusEffect(StatusEffectType.SLOW, this);
+            StatusEffect.RemoveStatusEffect(StatusEffectType.POISON, this);
         }
     }
     
@@ -46,7 +47,7 @@ public class PlayerStatusEffectHandler : MonoBehaviour
         switch (effectType)
         {
             case StatusEffectType.POISON:
-                Effects.PoisonEffect(type, poisonImage[0], poisonTimer);
+                Effects.PoisonEffect(type, poisonImage[0], poisonTimer, FindObjectOfType<Volume>());
                 break;
             
             case StatusEffectType.SLOW:
