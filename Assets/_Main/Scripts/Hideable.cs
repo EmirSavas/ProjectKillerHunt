@@ -7,7 +7,26 @@ using UnityEngine;
 
 public class Hideable : NetworkBehaviour
 {
-    public Transform referansPoint;
+    public float aimRotation;
+    public float rotationSpeed;
+    public float value;
+
+    public void Update()
+    {
+        if (aimRotation >= transform.localEulerAngles.y)
+        {
+            value = Time.deltaTime * rotationSpeed;
+            transform.eulerAngles += new Vector3(0, value, 0);
+        }
+        
+        if (aimRotation <= transform.localEulerAngles.y)
+        {
+            value = Time.deltaTime * rotationSpeed;
+            transform.eulerAngles += new Vector3(0, value, 0);
+        }
+    }
+
+    /*public Transform referansPoint;
 
     public float radius = 10f;
 
@@ -38,9 +57,7 @@ public class Hideable : NetworkBehaviour
     private void CmdCheckPlayer(bool empty)
     {
         isEmpty = empty;
-    }
-
-    
+    }*/
 }
     
         

@@ -9,6 +9,10 @@ public class InventorySystem : MonoBehaviour
     public CharacterMechanic characterMechanic;
    
     public ItemSlot[] slotGameObject;
+    
+    public Sprite slotUI;
+
+    public Sprite selectedSlotUI;
    
     public Sprite[] itemSprite; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Siringa // 4 = Null
     
@@ -18,6 +22,16 @@ public class InventorySystem : MonoBehaviour
         characterMechanic.selectedItem = slotGameObject[index].item;
 
         characterMechanic.SelecetedItem();
+
+        slotGameObject[index].GetComponent<Image>().sprite = selectedSlotUI;
+            
+        for (int i = 0; i < slotGameObject.Length; i++)
+        {
+            if (i != index)
+            {
+                slotGameObject[i].GetComponent<Image>().sprite = slotUI;
+            }
+        }
     }
 
     public void AddItemToSlot(Item item)

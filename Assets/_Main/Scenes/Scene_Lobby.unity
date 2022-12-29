@@ -1605,11 +1605,13 @@ MonoBehaviour:
   spawnPrefabs: []
   roomPlayerPrefab: {fileID: 6904638964617479091, guid: 3876902498aa335489ee0dfc103c9c7c,
     type: 3}
-  gamePlayerPrefab: {fileID: -3432112306792294613, guid: 169551bb01ad9a547b6023e29a29270f,
-    type: 3}
+  gamePlayerPrefab:
+  - {fileID: -3432112306792294613, guid: 169551bb01ad9a547b6023e29a29270f, type: 3}
+  - {fileID: 131115424547372392, guid: 0d83e927c3636244fa5b072c2b98e93b, type: 3}
   minPlayers: 1
   roomPlayers: []
   gamePlayers: []
+  readyPlayerCount: 0
   spawnPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &1161932316
 MonoBehaviour:
@@ -2084,6 +2086,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkManager: {fileID: 1161932315}
   landingPagePanel: {fileID: 1265693007}
+  dropDown: {fileID: 0}
+  scrollBar: {fileID: 0}
 --- !u!1 &1650448512
 GameObject:
   m_ObjectHideFlags: 0
@@ -3039,8 +3043,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ffee3f7940283439ac05838a6434c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkManager: {fileID: 0}
-  landingPagePanel: {fileID: 0}
+  networkManager: {fileID: 1161932315}
+  landingPagePanel: {fileID: 1265693007}
+  dropDown: {fileID: 3950176403687517404}
+  scrollBar: {fileID: 2164869248785332335}
 --- !u!1 &1986999840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3809,7 +3815,19 @@ MonoBehaviour:
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1942864336}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: VolumeSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &2169657471273208130
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4530,11 +4548,21 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: High
       m_Image: {fileID: 0}
-    - m_Text: Ultra
-      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1942864336}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: OptionsQualitySettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &3980185749006350421
 MonoBehaviour:
@@ -4961,7 +4989,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1942864336}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: MuteSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!222 &5113425918841020364
 CanvasRenderer:

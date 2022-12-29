@@ -21,6 +21,9 @@ public class CharacterMechanic : NetworkBehaviour
     public InventorySystem inventorySystem;
     public GameObject pauseMenu;
 
+    //Hidable Obj
+    private bool _leftDoorOpening = false;
+    private bool _rightDoorOpening = false;
     private Hideable _hideableObj;
 
     //Item
@@ -34,7 +37,7 @@ public class CharacterMechanic : NetworkBehaviour
     public int activeWeaponSynced;
     
     //PauseMenu
-    public bool pauseGame = false;
+    public bool pauseGame;
 
 
     void Start()
@@ -79,12 +82,22 @@ public class CharacterMechanic : NetworkBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            player.enabled = false;
-            Cursor.lockState = CursorLockMode.None;
-            pauseGame = true;
-            pauseMenu.SetActive(true);
+            player.enabled = pauseGame;
+            pauseGame = !pauseGame;
+            pauseMenu.SetActive(pauseGame);
+            
+            if (pauseGame)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
     }
+    
     private void UseItemInHand()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && selectedItem != Item.EMPTY)
@@ -249,22 +262,12 @@ public class CharacterMechanic : NetworkBehaviour
                 pressE.SetActive(true);
                 
                 _hideableObj = hit.collider.GetComponent<Hideable>();
-            
-                if (Input.GetKeyDown(KeyCode.E) && !player.playerHiding)
-                {
-                    _hideableObj.CheckPlayer(netIdentity);
-                }
             }
         }
 
         else
         {
             pressE.SetActive(false);
-            
-            if (Input.GetKeyDown(KeyCode.E) && player.playerHiding)
-            {
-                _hideableObj.CheckPlayer(netIdentity);
-            }
         }
     }
     

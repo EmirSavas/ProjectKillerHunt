@@ -17,7 +17,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))]
     public bool IsReady = false;
-
+    [SyncVar]public int characterInt;
     private bool isLeader;
 
     public bool IsLeader
@@ -124,11 +124,13 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         if (IsReady)
         {
             readyButton.text = "Not Ready";
+            Room.readyPlayerCount++;
         }
 
         else
         {
             readyButton.text = "Ready";
+            Room.readyPlayerCount--;
         }
 
         Room.NotifyPlayersOfReadyState();
@@ -138,12 +140,15 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     public void CmdStartGame()
     {
         if (Room.roomPlayers[0].connectionToClient != connectionToClient) { return;}
-
         //Start Game
-         if (Room.roomPlayers.Count >= 1)
-         {
-             Debug.Log("GameStarting");
-             Room.StartGame();
-         }
+        Debug.Log("GameStarting"); 
+        Room.StartGame();
+         
+    }
+
+    [Command]
+    public void ChangeCharacter(int i)
+    {
+        characterInt = i;
     }
 }

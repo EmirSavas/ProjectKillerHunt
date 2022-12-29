@@ -12,7 +12,8 @@ public class NetworkManagerLobby : NetworkManager
     [Scene] private string menuScene = "Scene_Lobby"; //Lobi adiyla esit olmasi lazim!
 
     [SerializeField] private NetworkRoomPlayerLobby roomPlayerPrefab = null;
-    [SerializeField] private NetworkGamePlayerLobby gamePlayerPrefab = null;
+    [SerializeField] private NetworkGamePlayerLobby[] gamePlayerPrefab = null;
+    private int _gamePlayerSelect = 0;
 
 
     [SerializeField] private int minPlayers = 2;
@@ -22,6 +23,7 @@ public class NetworkManagerLobby : NetworkManager
 
     public List<NetworkRoomPlayerLobby> roomPlayers = new List<NetworkRoomPlayerLobby>();
     public List<NetworkGamePlayerLobby> gamePlayers = new List<NetworkGamePlayerLobby>();
+    public int readyPlayerCount;
 
     public Vector3 spawnPoint;
     
@@ -116,7 +118,7 @@ public class NetworkManagerLobby : NetworkManager
 
     private bool IsReadyToStart()
     {
-        if (numPlayers < minPlayers)
+        if (numPlayers > readyPlayerCount)
         {
             foreach (var player in roomPlayers)
             {
@@ -136,13 +138,13 @@ public class NetworkManagerLobby : NetworkManager
                 return;
             }
             
-            ServerChangeScene("Emre(Character)");
+            ServerChangeScene("Gameplay");
         }
     }
 
     public override void ServerChangeScene(string newSceneName)
     {
-        if (SceneManager.GetActiveScene().name == menuScene &&  newSceneName.StartsWith("Emre(Character)"))
+        if (SceneManager.GetActiveScene().name == menuScene &&  newSceneName.StartsWith("Gameplay"))
         {
             for (int i = roomPlayers.Count - 1; i >= 0 ; i--)
             {
@@ -150,25 +152,29 @@ public class NetworkManagerLobby : NetworkManager
                 
                 if (roomPlayers.Count == 1)
                 {
-                    spawnPoint = new Vector3(-248.56f,63.511f, -27.32f);
+                    spawnPoint = new Vector3(0,2.65f,3.15f);
+                    _gamePlayerSelect = roomPlayers[0].characterInt;
                 }
                 
                 else if(roomPlayers.Count == 2)
                 {
-                    spawnPoint = new Vector3(-238.88f,63.511f, -27.32f);
+                    spawnPoint = new Vector3(1,2.65f,3.15f);
+                    _gamePlayerSelect = roomPlayers[1].characterInt;
                 }
                 
                 else if(roomPlayers.Count == 3)
                 {
-                    spawnPoint = new Vector3(-227.3f,63.511f,-38.28f);
+                    spawnPoint = new Vector3(2,2.65f,3.15f);
+                    _gamePlayerSelect = roomPlayers[2].characterInt;
                 }
                 
                 else if(roomPlayers.Count == 4)
                 {
-                    spawnPoint = new Vector3(-257.85f,63.511f,-38.28f);
+                    spawnPoint = new Vector3(3,2.65f,3.15f);
+                    _gamePlayerSelect = roomPlayers[3].characterInt;
                 }
                 
-                var gameplayerInstance = Instantiate(gamePlayerPrefab, spawnPoint, quaternion.identity);
+                var gameplayerInstance = Instantiate(gamePlayerPrefab[_gamePlayerSelect], spawnPoint, quaternion.identity);
                 gameplayerInstance.SetDisplayName(roomPlayers[i].DisplayName);
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, gameplayerInstance.gameObject);
