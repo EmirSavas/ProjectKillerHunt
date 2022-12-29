@@ -262,6 +262,11 @@ public class CharacterMechanic : NetworkBehaviour
                 pressE.SetActive(true);
                 
                 _hideableObj = hit.collider.GetComponent<Hideable>();
+                
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    _hideableObj.CmdInteract();
+                }
             }
         }
 

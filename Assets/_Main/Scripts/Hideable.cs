@@ -1,63 +1,48 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Mirror;
 using UnityEngine;
 
 
 public class Hideable : NetworkBehaviour
 {
-    public float aimRotation;
-    public float rotationSpeed;
-    public float value;
+    [SyncVar] public bool isOpen;
+    public float endValue;
+    public Ease ease;
 
-    public void Update()
+    private void Start()
     {
-        if (aimRotation >= transform.localEulerAngles.y)
-        {
-            value = Time.deltaTime * rotationSpeed;
-            transform.eulerAngles += new Vector3(0, value, 0);
-        }
-        
-        if (aimRotation <= transform.localEulerAngles.y)
-        {
-            value = Time.deltaTime * rotationSpeed;
-            transform.eulerAngles += new Vector3(0, value, 0);
-        }
-    }
-
-    /*public Transform referansPoint;
-
-    public float radius = 10f;
-
-    [SyncVar] public bool isEmpty;
-    
-    public void CheckPlayer(NetworkIdentity id)
-    {
-        CharacterMovement player = id.GetComponent<CharacterMovement>();
-        
-        if (!player.playerHiding && !isEmpty)
-        {
-            player.GetComponent<CharacterController>().enabled = false;
-            player.transform.position = this.transform.position;
-            player.playerHiding = true;
-            CmdCheckPlayer(true);
-        }
-
-        else if (player.playerHiding)
-        {
-            player.transform.position = referansPoint.position;
-            player.GetComponent<CharacterController>().enabled = true;
-            player.playerHiding = false;
-            CmdCheckPlayer(false);
-        }
+        //InvokeRepeating(nameof(Interact), 2, 2);
     }
 
     [Command(requiresAuthority = false)]
-    private void CmdCheckPlayer(bool empty)
+    public void CmdInteract()
     {
-        isEmpty = empty;
-    }*/
+        RpcInteract();
+    }
+    
+    [ClientRpc]
+    public void RpcInteract()
+    {
+        if (isOpen) Close();
+        
+        else Move();
+
+        isOpen = !isOpen;
+    }
+    
+
+    public void Move()
+    {
+        transform.DOLocalRotate(new Vector3(0, endValue, 0), 0.85f).SetEase(ease);
+    }
+    
+    public void Close()
+    {
+        transform.DOLocalRotate(Vector3.zero,  0.85f).SetEase(ease);
+    }
 }
     
         
