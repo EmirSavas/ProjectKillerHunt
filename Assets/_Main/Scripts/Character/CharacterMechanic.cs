@@ -32,6 +32,7 @@ public class CharacterMechanic : NetworkBehaviour
     public GameObject[] item; //0 = Flashlight // 1 = Key //  2 = Medkit // 3 = Syringe
     public int selectedGameObject;
     public Flashlight _flashlight;
+    public int selectedSlot;
 
     [SyncVar(hook = nameof(OnWeaponChanged))]
     public int activeWeaponSynced;
@@ -228,19 +229,23 @@ public class CharacterMechanic : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            inventorySystem.SelectedSlot(0);
+            selectedSlot = 0;
+            inventorySystem.SelectedSlot(selectedSlot);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            inventorySystem.SelectedSlot(1);
+            selectedSlot = 1;
+            inventorySystem.SelectedSlot(selectedSlot);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            inventorySystem.SelectedSlot(2);
+            selectedSlot = 2;
+            inventorySystem.SelectedSlot(selectedSlot);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            inventorySystem.SelectedSlot(3);
+            selectedSlot = 3;
+            inventorySystem.SelectedSlot(selectedSlot);
         }
     }
     

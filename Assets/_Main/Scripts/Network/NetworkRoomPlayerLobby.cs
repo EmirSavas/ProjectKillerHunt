@@ -12,6 +12,7 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
     [SerializeField] private Text[] playerReadyTexts = new Text[4];
     [SerializeField] private Text readyButton = null;
     [SerializeField] private Button startGameButton = null;
+    public GameObject characterSelection;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))]
     public string DisplayName = "Loading...";
@@ -46,6 +47,8 @@ public class NetworkRoomPlayerLobby : NetworkBehaviour
         CmdSetDisplayName(PlayerNameInput.DisplayName);
 
         lobbyUI.SetActive(true);
+        
+        characterSelection.SetActive(true);
     }
 
     public override void OnStartClient()

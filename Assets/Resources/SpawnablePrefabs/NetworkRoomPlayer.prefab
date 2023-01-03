@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5467567914547417671
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2144,6 +2144,7 @@ MonoBehaviour:
   - {fileID: 6904638964991967757}
   readyButton: {fileID: 6904638964221634189}
   startGameButton: {fileID: 6904638963398657713}
+  characterSelection: {fileID: 161430083051741482}
   DisplayName: Loading...
   IsReady: 0
   characterInt: 0

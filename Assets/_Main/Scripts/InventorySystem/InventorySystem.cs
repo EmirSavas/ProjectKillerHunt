@@ -41,7 +41,14 @@ public class InventorySystem : MonoBehaviour
             if (slot.isSlotFull == false)
             {
                 slot.ChangeSprite(itemSprite[(int)item]);
+                
                 slot.ChangeValues(item);
+                
+                if (slotGameObject[characterMechanic.selectedSlot].gameObject == slot.gameObject)
+                {
+                    SelectedSlot(characterMechanic.selectedSlot);
+                }
+                
                 return;
             }
         }
