@@ -1,13 +1,14 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private NetworkManagerLobby networkManager = null;
+    [SerializeField] private NetworkManagerLobby networkManager;
 
-    [SerializeField] private GameObject landingPagePanel = null;
+    [SerializeField] private GameObject landingPagePanel;
     
-    public Dropdown dropDown;
+    public TMP_Dropdown dropDown;
     
     public Scrollbar scrollBar;
 
