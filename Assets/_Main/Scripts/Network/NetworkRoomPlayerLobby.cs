@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using Mirror.Examples.Pong;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class NetworkRoomPlayerLobby : NetworkBehaviour
 {
     [Header("UI")] [SerializeField] private GameObject lobbyUI = null;
-    [SerializeField] private Text[] playerNameText = new Text[4];
-    [SerializeField] private Text[] playerReadyTexts = new Text[4];
-    [SerializeField] private Text readyButton = null;
+    [SerializeField] private TextMeshProUGUI[] playerNameText = new TextMeshProUGUI[4];
+    [SerializeField] private TextMeshProUGUI[] playerReadyTexts = new TextMeshProUGUI[4];
+    [SerializeField] private TextMeshProUGUI readyButton = null;
     [SerializeField] private Button startGameButton = null;
     public GameObject characterSelection;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))]
-    public string DisplayName = "Loading...";
+    public string DisplayName = "Connecting...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))]
     public bool IsReady = false;
     [SyncVar]public int characterInt;
