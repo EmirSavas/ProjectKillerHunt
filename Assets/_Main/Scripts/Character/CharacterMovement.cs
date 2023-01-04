@@ -115,7 +115,7 @@ public class CharacterMovement : NetworkBehaviour
         //     Jump();
         // }
 
-        if (Input.GetButtonUp("Crouch"))
+        if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             if (!_crouchDelay)
             {
@@ -201,7 +201,7 @@ public class CharacterMovement : NetworkBehaviour
             anim.SetBool("crouch", false);
         }
         
-        yield return new WaitForSeconds(0.65f);
+        yield return new WaitForSeconds(0.25f);
 
         _crouchDelay = false;
     }
