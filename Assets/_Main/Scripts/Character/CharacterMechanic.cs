@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
@@ -39,6 +40,8 @@ public class CharacterMechanic : NetworkBehaviour
     
     //PauseMenu
     public bool pauseGame;
+
+    public LayerMask interactableMask;
 
 
     void Start()
@@ -252,24 +255,24 @@ public class CharacterMechanic : NetworkBehaviour
     private void Raycast()
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        
-        if (Physics.SphereCast(ray, 0.25f ,out RaycastHit hit, 2))
-        {
-            if (hit.collider.gameObject.layer == 8)
-            {
-                pressE.SetActive(true);
-                
-                InteractWithObject(hit.collider.gameObject);
-            }
 
-            if (hit.collider.gameObject.layer == 7)
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.5f, interactableMask))
+        {
+            pressE.SetActive(true);
+            
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Interactable"))
             {
-                pressE.SetActive(true);
-                
-                _hideableObj = hit.collider.GetComponent<Hideable>();
-                
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    InteractWithObject(hit.collider.gameObject);
+                }
+            }
+
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("HideableObject"))
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    _hideableObj = hit.collider.GetComponent<Hideable>();
                     _hideableObj.CmdInteract();
                 }
             }
@@ -287,5 +290,21 @@ public class CharacterMechanic : NetworkBehaviour
         {
             interactableObj.Interact(this, player);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Physics.Raycast(ray, out RaycastHit hit, 1.5f, interactableMask);
+
+        if (hit.transform == null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(ray);
+            return;
+        }
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(ray);
     }
 }

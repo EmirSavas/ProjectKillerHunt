@@ -1100,8 +1100,12 @@ MonoBehaviour:
   - {fileID: 219261676933920028}
   selectedGameObject: 4
   _flashlight: {fileID: 8320190391398471167}
+  selectedSlot: 0
   activeWeaponSynced: 1
   pauseGame: 0
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!95 &7031934215895422301
 Animator:
   serializedVersion: 4

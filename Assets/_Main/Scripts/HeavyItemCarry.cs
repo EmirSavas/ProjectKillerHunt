@@ -14,17 +14,10 @@ public class HeavyItemCarry : NetworkBehaviour, IInteractable
 
     public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            CmdCarryItem(true, cm.transform, cm);
-            rb.isKinematic = true;
-        }
+        rb.isKinematic = !rb.isKinematic;
         
-        if (Input.GetMouseButton(0))
-        {
-            rb.isKinematic = false;
-            CmdCarryItem(false, null, cm);
-        }
+        if (rb.isKinematic) CmdCarryItem(true, cm.transform, cm);
+        else CmdCarryItem(false, null, cm);
     }
 
 
