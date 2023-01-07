@@ -4,7 +4,7 @@ using GenericPuzzleMechanics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class P_RotatingCircles : MonoBehaviour, IInteractable
+public class P_RotatingCircles : Puzzle
 {
     [SerializeField] private new bool enabled;
     [SerializeField] private float rotateSpeed;
@@ -30,9 +30,8 @@ public class P_RotatingCircles : MonoBehaviour, IInteractable
             circle.Rotate(new Vector3(0, Random.Range(0, 360)));
         }
     }
-    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
+    public override void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
-        //throw new Exception("Not Finished");
         //todo Zoom Player
 
         enabled = !enabled;

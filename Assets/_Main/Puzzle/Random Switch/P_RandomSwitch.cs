@@ -11,13 +11,15 @@ public class RandomSwitch
     public Renderer alarm;
 }
 
-public class P_RandomSwitch : MonoBehaviour, IInteractable
+public class P_RandomSwitch : Puzzle
 {
     [SerializeField] private new bool enabled;
     
     public List<RandomSwitch> buttons;
     
     public bool completed;
+
+    public Transform camRefPoint;
     
     private int _selectedIndex;
     private RandomSwitch _selectedSwitch;
@@ -25,14 +27,22 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
 
     private List<int> _selectSequence = new List<int>();
 
+    private Vector3 _oldCamPoint;
+
     private int _targetIndex;
     private int _trueCount;
 
-    public void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
+    public override void Interact(CharacterMechanic cm, CharacterMovement characterMovement)
     {
-        //todo Zoom Player
-            
         enabled = !enabled;
+        
+        if (!enabled) CameraChange(characterMovement, _oldCamPoint);
+        
+        else
+        {
+            _oldCamPoint = characterMovement.cam.transform.position;
+            CameraChange(characterMovement, camRefPoint.position);
+        }
     }
 
     private void Start()
@@ -56,14 +66,14 @@ public class P_RandomSwitch : MonoBehaviour, IInteractable
     {
         if(!enabled) return;
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, buttons.Count, Mechanics.IncreaseIndex);
             
             ChangeButtonSelection(_selectedIndex);
         }
         
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             _selectedIndex = Mechanics.ChangeIndex(_selectedIndex, 0, buttons.Count, Mechanics.DecreaseIndex);
             

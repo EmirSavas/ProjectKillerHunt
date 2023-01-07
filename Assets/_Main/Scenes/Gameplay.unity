@@ -380,6 +380,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4844381117623349005}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &105718454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105718455}
+  m_Layer: 0
+  m_Name: Camera Ref Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &105718455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105718454}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.061, z: 0.475}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 414374613}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &108533760 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 698639e553611a848843797898d852f7,
@@ -5792,6 +5823,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4844381118399046640}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &414374613 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1995155917754791273, guid: 9033907ba6aa5e04da8cba3624bb4a5f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1995155918370756268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &415069012
 GameObject:
   m_ObjectHideFlags: 0
@@ -10052,6 +10089,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1995155918659408182, guid: 9033907ba6aa5e04da8cba3624bb4a5f,
+        type: 3}
+      propertyPath: camRefPoint
+      value: 
+      objectReference: {fileID: 105718455}
     - target: {fileID: 1995155918659408185, guid: 9033907ba6aa5e04da8cba3624bb4a5f,
         type: 3}
       propertyPath: m_Layer
@@ -51471,13 +51513,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.41141987
+      objectReference: {fileID: 0}
+    - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
+        type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.10000002
+      value: 0.41141993
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.10000002
+      value: 0.41141993
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
@@ -51497,27 +51544,27 @@ PrefabInstance:
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7363284
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.6766243
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 85.161
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 726318327374124220, guid: 070464ed92c42684f87089e179d17af6,
         type: 3}
